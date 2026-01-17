@@ -8,13 +8,9 @@ import BookingForm from './components/BookingForm';
 import ChatModal from './components/ChatModal';
 import Footer from './components/Footer';
 import ServiceDetailModal from './components/ServiceDetailModal';
-import WelcomeAnimation from './components/WelcomeAnimation';
 import type { Service, CartItem, SubService } from './types';
 
 const App: React.FC = () => {
-  // Loading state
-  const [showWelcome, setShowWelcome] = useState(true);
-
   // Modal states
   const [isServiceDetailOpen, setIsServiceDetailOpen] = useState<boolean>(false);
   const [isBookingFormOpen, setIsBookingFormOpen] = useState<boolean>(false);
@@ -96,10 +92,8 @@ const App: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-textPrimary">
-      {showWelcome && <WelcomeAnimation onComplete={() => setShowWelcome(false)} />}
-      
       <Header />
-      <main className={`flex-grow transition-opacity duration-1000 ${showWelcome ? 'opacity-0' : 'opacity-100'}`}>
+      <main className="flex-grow">
         <Hero onBookNow={() => {
           const mainServicesSection = document.getElementById('services');
           if (mainServicesSection) {
