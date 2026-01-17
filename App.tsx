@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -7,9 +8,13 @@ import BookingForm from './components/BookingForm';
 import ChatModal from './components/ChatModal';
 import Footer from './components/Footer';
 import ServiceDetailModal from './components/ServiceDetailModal';
+import WelcomeAnimation from './components/WelcomeAnimation';
 import type { Service, CartItem, SubService } from './types';
 
 const App: React.FC = () => {
+  // Loading state
+  const [showWelcome, setShowWelcome] = useState(true);
+
   // Modal states
   const [isServiceDetailOpen, setIsServiceDetailOpen] = useState<boolean>(false);
   const [isBookingFormOpen, setIsBookingFormOpen] = useState<boolean>(false);
@@ -26,13 +31,11 @@ const App: React.FC = () => {
         setIsServiceDetailOpen(false);
         setIsBookingFormOpen(false);
         setIsChatModalOpen(false);
-        // Prevent default browser back behavior since we've "handled" it by closing modals
       }
     };
 
     window.addEventListener('popstate', handlePopState);
     
-    // Push state when any modal opens
     if (isServiceDetailOpen || isBookingFormOpen || isChatModalOpen) {
       window.history.pushState({ modalOpen: true }, '');
     }
@@ -40,7 +43,6 @@ const App: React.FC = () => {
     return () => window.removeEventListener('popstate', handlePopState);
   }, [isServiceDetailOpen, isBookingFormOpen, isChatModalOpen]);
 
-  // Open service details modal
   const handleViewDetails = (service: Service) => {
     setSelectedService(service);
     setIsServiceDetailOpen(true);
@@ -50,7 +52,6 @@ const App: React.FC = () => {
     setIsServiceDetailOpen(false);
   };
   
-  // Proceed to booking from the details modal
   const handleProceedToBooking = () => {
     if (cart.length > 0) {
       setIsServiceDetailOpen(false);
@@ -95,8 +96,10 @@ const App: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-textPrimary">
+      {showWelcome && <WelcomeAnimation onComplete={() => setShowWelcome(false)} />}
+      
       <Header />
-      <main className="flex-grow">
+      <main className={`flex-grow transition-opacity duration-1000 ${showWelcome ? 'opacity-0' : 'opacity-100'}`}>
         <Hero onBookNow={() => {
           const mainServicesSection = document.getElementById('services');
           if (mainServicesSection) {
