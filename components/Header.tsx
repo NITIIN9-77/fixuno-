@@ -70,6 +70,7 @@ const Header: React.FC<HeaderProps> = ({ onOpenHistory, onNavigate }) => {
           </button>
           <nav className="hidden md:flex items-center space-x-6">
             <button onClick={() => onNavigate('/service')} className="text-textSecondary hover:text-primary transition-colors duration-200 text-sm font-medium">Services</button>
+            <button onClick={() => onNavigate('/contact-us')} className="text-textSecondary hover:text-primary transition-colors duration-200 text-sm font-medium">Contact Us</button>
             <button onClick={onOpenHistory} className="text-textSecondary hover:text-primary transition-colors duration-200 text-sm font-medium">My Bookings</button>
             <div className="relative" ref={dropdownRef}>
                 <button 

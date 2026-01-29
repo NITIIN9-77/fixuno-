@@ -14,6 +14,9 @@ import { SERVICES } from './constants';
 import type { Service, CartItem, SubService, User, Booking } from './types';
 
 const App: React.FC = () => {
+  // Navigation State
+  const [currentPath, setCurrentPath] = useState(window.location.pathname.toLowerCase());
+  
   // Modal states
   const [isServiceDetailOpen, setIsServiceDetailOpen] = useState<boolean>(false);
   const [isBookingFormOpen, setIsBookingFormOpen] = useState<boolean>(false);
@@ -41,21 +44,20 @@ const App: React.FC = () => {
   // Helper to update URL without reload
   const navigate = useCallback((path: string) => {
     window.history.pushState({}, '', path);
-    handleRouting();
+    setCurrentPath(path.toLowerCase());
   }, []);
 
   // Routing Logic
-  const handleRouting = useCallback(() => {
-    const path = window.location.pathname.toLowerCase();
+  useEffect(() => {
+    const path = currentPath;
     
-    // Close everything first to reset state on nav
+    // Reset Modal States
     setIsServiceDetailOpen(false);
     setIsBookingFormOpen(false);
     setIsHistoryOpen(false);
     setIsAdminDashboardOpen(false);
 
-    if (path === '/' || path === '') return;
-
+    // Deep Linking to Services
     if (path.includes('ac-repair')) {
       const service = SERVICES.find(s => s.id === 'ac');
       if (service) { setSelectedService(service); setIsServiceDetailOpen(true); }
@@ -66,17 +68,19 @@ const App: React.FC = () => {
       const service = SERVICES.find(s => s.id === 'large-appliance');
       if (service) { setSelectedService(service); setIsServiceDetailOpen(true); }
     } else if (path.includes('service')) {
-      document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
+      // If it's just the service page, we might want to hide other things or scroll
+      setTimeout(() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }), 100);
     } else if (path.includes('follow-us') || path.includes('contact-us')) {
-      document.getElementById('footer')?.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => document.getElementById('footer')?.scrollIntoView({ behavior: 'smooth' }), 100);
     }
-  }, []);
+  }, [currentPath]);
 
+  // Handle Browser Back/Forward
   useEffect(() => {
-    handleRouting();
-    window.addEventListener('popstate', handleRouting);
-    return () => window.removeEventListener('popstate', handleRouting);
-  }, [handleRouting]);
+    const handlePopState = () => setCurrentPath(window.location.pathname.toLowerCase());
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   const handleBookingSuccess = (newBooking: Booking) => {
     const updatedGlobal = [newBooking, ...globalBookings];
@@ -93,7 +97,7 @@ const App: React.FC = () => {
     setIsBookingFormOpen(false);
     setCart([]); 
     setSelectedService(null);
-    navigate('/'); // Go home after success
+    navigate('/'); 
   };
 
   const handleUpdateBookingStatus = (bookingId: string, newStatus: Booking['status']) => {
@@ -129,24 +133,54 @@ const App: React.FC = () => {
     });
   };
 
-  // Filter global bookings for the current logged-in user view
   const userBookings = globalBookings.filter(b => b.userPhone === user?.phone);
+
+  // Check if we are in a "Dedicated View"
+  const isContactView = currentPath.includes('contact-us');
+  const isServiceView = currentPath.includes('service');
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-textPrimary">
       <Header onOpenHistory={() => setIsHistoryOpen(true)} onNavigate={navigate} />
-      <main className="flex-grow">
-        <Hero onBookNow={() => navigate('/service')} />
-        <Services onViewDetails={(s) => { 
-            setSelectedService(s); 
-            setIsServiceDetailOpen(true); 
-            // Update URL based on selection
-            if(s.id === 'ac') navigate('/ac-repair');
-            else if(s.id === 'minor_work') navigate('/minor-home-repairs');
-            else if(s.id === 'large-appliance') navigate('/large-appliance-repair');
-        }} />
-        <Reviews />
+      
+      <main className="flex-grow animate-fade-in">
+        {/* Only show Hero on Home Path */}
+        {(currentPath === '/' || currentPath === '') && !isContactView && !isServiceView && (
+          <Hero onBookNow={() => navigate('/service')} />
+        )}
+
+        {/* Services Section */}
+        <div className={isContactView ? 'hidden' : ''}>
+           <Services onViewDetails={(s) => { 
+                setSelectedService(s); 
+                setIsServiceDetailOpen(true); 
+                if(s.id === 'ac') navigate('/ac-repair');
+                else if(s.id === 'minor_work') navigate('/minor-home-repairs');
+                else if(s.id === 'large-appliance') navigate('/large-appliance-repair');
+            }} />
+        </div>
+
+        {/* Contact Us Dedicated View */}
+        {isContactView && (
+            <div className="container mx-auto px-4 py-20 text-center animate-slide-in-up">
+                <h1 className="text-4xl font-black text-primary mb-6 uppercase tracking-widest">Contact Fixuno</h1>
+                <div className="bg-surface p-10 rounded-2xl border border-slate-700 max-w-xl mx-auto shadow-2xl">
+                    <p className="text-2xl font-bold mb-4">Phone: 8423979371</p>
+                    <p className="text-xl text-textSecondary mb-8">Email: fixuno628@gmail.com</p>
+                    <button 
+                        onClick={() => navigate('/')}
+                        className="bg-primary/20 text-primary border border-primary px-6 py-2 rounded-full hover:bg-primary hover:text-white transition-all"
+                    >
+                        Back to Home
+                    </button>
+                </div>
+            </div>
+        )}
+
+        {/* Reviews - Show on Home or Service View */}
+        {!isContactView && <Reviews />}
       </main>
+
       <Footer 
         onAdminLogin={() => {
           const pin = prompt("Enter Partner Admin PIN:");
@@ -162,7 +196,7 @@ const App: React.FC = () => {
           cart={cart}
           onAddToCart={handleAddToCart}
           onUpdateCartQuantity={handleUpdateCartQuantity}
-          onClose={() => { setIsServiceDetailOpen(false); navigate('/'); }}
+          onClose={() => { setIsServiceDetailOpen(false); navigate(isServiceView ? '/service' : '/'); }}
           onProceed={() => { setIsServiceDetailOpen(false); setIsBookingFormOpen(true); }}
         />
       )}
