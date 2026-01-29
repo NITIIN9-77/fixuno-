@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 const InstagramIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -21,7 +22,11 @@ const YouTubeIcon: React.FC<{ className?: string }> = ({ className }) => (
     </svg>
 );
 
-const Footer: React.FC = () => {
+interface FooterProps {
+    onAdminLogin?: () => void;
+}
+
+const Footer: React.FC<FooterProps> = ({ onAdminLogin }) => {
   return (
     <footer id="footer" className="bg-background border-t border-slate-700">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -29,6 +34,15 @@ const Footer: React.FC = () => {
           <div className="md:col-span-1">
             <h3 className="text-xl font-bold mb-4 text-primary tracking-wider uppercase">FIXUNO</h3>
             <p className="text-textSecondary">Reliable. Fast. The one solution for all your home needs.</p>
+            <button 
+                onClick={onAdminLogin}
+                className="mt-6 text-xs text-textSecondary hover:text-primary transition-colors flex items-center mx-auto md:mx-0 opacity-50 hover:opacity-100"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 00-2 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                Partner Admin Login
+            </button>
           </div>
           <div>
             <h3 className="text-xl font-bold mb-4">Contact Us</h3>

@@ -9,6 +9,7 @@ import ChatModal from './components/ChatModal';
 import Footer from './components/Footer';
 import ServiceDetailModal from './components/ServiceDetailModal';
 import BookingHistoryModal from './components/BookingHistoryModal';
+import AdminDashboard from './components/AdminDashboard';
 import type { Service, CartItem, SubService, User, Booking } from './types';
 
 const App: React.FC = () => {
@@ -17,6 +18,7 @@ const App: React.FC = () => {
   const [isBookingFormOpen, setIsBookingFormOpen] = useState<boolean>(false);
   const [isChatModalOpen, setIsChatModalOpen] = useState<boolean>(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
+  const [isAdminDashboardOpen, setIsAdminDashboardOpen] = useState<boolean>(false);
   
   // Data states
   const [selectedService, setSelectedService] = useState<Service | null>(null);
@@ -24,62 +26,39 @@ const App: React.FC = () => {
   
   // Simulated "Backend" Storage (localStorage)
   const [user, setUser] = useState<User | null>(null);
-  const [bookingHistory, setBookingHistory] = useState<Booking[]>([]);
+  const [globalBookings, setGlobalBookings] = useState<Booking[]>([]);
 
   // Load "Backend" data on mount
   useEffect(() => {
     const storedUser = localStorage.getItem('fixuno_user');
-    const storedHistory = localStorage.getItem('fixuno_bookings');
+    const storedGlobalHistory = localStorage.getItem('fixuno_global_bookings');
     
     if (storedUser) setUser(JSON.parse(storedUser));
-    if (storedHistory) setBookingHistory(JSON.parse(storedHistory));
+    if (storedGlobalHistory) setGlobalBookings(JSON.parse(storedGlobalHistory));
   }, []);
 
-  // Back Button Logic: Handle mobile back button to close modals
+  // Back Button Logic
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
-      if (isServiceDetailOpen || isBookingFormOpen || isChatModalOpen || isHistoryOpen) {
+      if (isServiceDetailOpen || isBookingFormOpen || isChatModalOpen || isHistoryOpen || isAdminDashboardOpen) {
         setIsServiceDetailOpen(false);
         setIsBookingFormOpen(false);
         setIsChatModalOpen(false);
         setIsHistoryOpen(false);
+        setIsAdminDashboardOpen(false);
       }
     };
 
     window.addEventListener('popstate', handlePopState);
-    
-    if (isServiceDetailOpen || isBookingFormOpen || isChatModalOpen || isHistoryOpen) {
+    if (isServiceDetailOpen || isBookingFormOpen || isChatModalOpen || isHistoryOpen || isAdminDashboardOpen) {
       window.history.pushState({ modalOpen: true }, '');
     }
-
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [isServiceDetailOpen, isBookingFormOpen, isChatModalOpen, isHistoryOpen]);
+  }, [isServiceDetailOpen, isBookingFormOpen, isChatModalOpen, isHistoryOpen, isAdminDashboardOpen]);
 
-  const handleViewDetails = (service: Service) => {
-    setSelectedService(service);
-    setIsServiceDetailOpen(true);
-  };
-
-  const closeServiceDetailModal = () => {
-    setIsServiceDetailOpen(false);
-  };
-  
-  const handleProceedToBooking = () => {
-    if (cart.length > 0) {
-      setIsServiceDetailOpen(false);
-      setIsBookingFormOpen(true);
-    } else {
-      alert("Your cart is empty. Please add a service to proceed.");
-    }
-  };
-
-  const closeBookingForm = () => {
-    setIsBookingFormOpen(false);
-  };
-  
   const handleBookingSuccess = (newBooking: Booking) => {
-    // 1. Update Simulated Backend
-    const updatedHistory = [newBooking, ...bookingHistory];
+    // 1. Update Global "Backend"
+    const updatedGlobal = [newBooking, ...globalBookings];
     const updatedUser: User = {
         name: newBooking.userName,
         phone: newBooking.userPhone,
@@ -87,17 +66,31 @@ const App: React.FC = () => {
         lastBookingDate: newBooking.date
     };
 
-    setBookingHistory(updatedHistory);
+    setGlobalBookings(updatedGlobal);
     setUser(updatedUser);
 
-    // 2. Persist to "Backend" (localStorage)
-    localStorage.setItem('fixuno_bookings', JSON.stringify(updatedHistory));
+    // 2. Persist to "Backend"
+    localStorage.setItem('fixuno_global_bookings', JSON.stringify(updatedGlobal));
     localStorage.setItem('fixuno_user', JSON.stringify(updatedUser));
 
-    // 3. Reset App State
+    // 3. Reset
     setIsBookingFormOpen(false);
     setCart([]); 
     setSelectedService(null);
+  };
+
+  const handleUpdateBookingStatus = (bookingId: string, newStatus: Booking['status']) => {
+    const updated = globalBookings.map(b => b.id === bookingId ? { ...b, status: newStatus } : b);
+    setGlobalBookings(updated);
+    localStorage.setItem('fixuno_global_bookings', JSON.stringify(updated));
+  };
+
+  const handleDeleteBooking = (bookingId: string) => {
+      if (window.confirm("Are you sure you want to delete this booking from the backend?")) {
+        const updated = globalBookings.filter(b => b.id !== bookingId);
+        setGlobalBookings(updated);
+        localStorage.setItem('fixuno_global_bookings', JSON.stringify(updated));
+      }
   };
 
   const handleAddToCart = (subService: SubService, parentServiceName: string) => {
@@ -114,14 +107,13 @@ const App: React.FC = () => {
 
   const handleUpdateCartQuantity = (subServiceId: string, quantity: number) => {
     setCart(prevCart => {
-      if (quantity <= 0) {
-        return prevCart.filter(item => item.id !== subServiceId);
-      }
-      return prevCart.map(item =>
-        item.id === subServiceId ? { ...item, quantity } : item
-      );
+      if (quantity <= 0) return prevCart.filter(item => item.id !== subServiceId);
+      return prevCart.map(item => item.id === subServiceId ? { ...item, quantity } : item);
     });
   };
+
+  // Filter global bookings for the current logged-in user view
+  const userBookings = globalBookings.filter(b => b.userPhone === user?.phone);
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-textPrimary">
@@ -129,14 +121,19 @@ const App: React.FC = () => {
       <main className="flex-grow">
         <Hero onBookNow={() => {
           const mainServicesSection = document.getElementById('services');
-          if (mainServicesSection) {
-            mainServicesSection.scrollIntoView({ behavior: 'smooth' });
-          }
+          if (mainServicesSection) mainServicesSection.scrollIntoView({ behavior: 'smooth' });
         }} />
-        <Services onViewDetails={handleViewDetails} />
+        <Services onViewDetails={(s) => { setSelectedService(s); setIsServiceDetailOpen(true); }} />
         <Reviews />
       </main>
-      <Footer />
+      <Footer onAdminLogin={() => {
+          const pin = prompt("Enter Partner Admin PIN:");
+          if (pin === "1234") {
+              setIsAdminDashboardOpen(true);
+          } else if (pin !== null) {
+              alert("Invalid PIN.");
+          }
+      }} />
 
       {isServiceDetailOpen && selectedService && (
         <ServiceDetailModal
@@ -144,8 +141,8 @@ const App: React.FC = () => {
           cart={cart}
           onAddToCart={handleAddToCart}
           onUpdateCartQuantity={handleUpdateCartQuantity}
-          onClose={closeServiceDetailModal}
-          onProceed={handleProceedToBooking}
+          onClose={() => setIsServiceDetailOpen(false)}
+          onProceed={() => { setIsServiceDetailOpen(false); setIsBookingFormOpen(true); }}
         />
       )}
       
@@ -153,16 +150,25 @@ const App: React.FC = () => {
         <BookingForm
           cart={cart}
           userProfile={user}
-          onClose={closeBookingForm}
+          onClose={() => setIsBookingFormOpen(false)}
           onSuccess={handleBookingSuccess}
         />
       )}
 
       {isHistoryOpen && (
         <BookingHistoryModal 
-            bookings={bookingHistory} 
+            bookings={userBookings} 
             onClose={() => setIsHistoryOpen(false)} 
         />
+      )}
+
+      {isAdminDashboardOpen && (
+          <AdminDashboard 
+            bookings={globalBookings}
+            onClose={() => setIsAdminDashboardOpen(false)}
+            onUpdateStatus={handleUpdateBookingStatus}
+            onDelete={handleDeleteBooking}
+          />
       )}
 
       <ChatModal 
