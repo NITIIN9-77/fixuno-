@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { memo } from 'react';
 import type { Service } from '../types';
 
 interface ServiceCardProps {
@@ -22,4 +23,5 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, onViewDetails }) => 
   );
 };
 
-export default ServiceCard;
+// Speed: Prevent unnecessary re-renders of static service cards
+export default memo(ServiceCard);

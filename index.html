@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,6 +7,15 @@
     <link rel="shortcut icon" href="favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fixuno - Premium Home Services</title>
+    
+    <!-- Speed: Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <link rel="dns-prefetch" href="https://aistudiocdn.com">
+
+    <!-- Speed: Optimized Font Loading -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Import Map must be in head -->
     <script type="importmap">
@@ -36,11 +46,11 @@
               sans: ['Inter', 'sans-serif'],
             },
             animation: {
-                'slide-in-up': 'slide-in-up 0.5s ease-out forwards',
-                'fade-in': 'fade-in 0.5s ease-out forwards',
+                'slide-in-up': 'slide-in-up 0.4s ease-out forwards', // Speed: Shortened duration
+                'fade-in': 'fade-in 0.3s ease-out forwards',         // Speed: Shortened duration
                 'glow': 'glow 2.5s ease-in-out infinite',
                 'pulse-subtle': 'pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                'scale-up-fade-in': 'scale-up-fade-in 0.4s ease-out forwards',
+                'scale-up-fade-in': 'scale-up-fade-in 0.3s ease-out forwards',
                 'draw': 'draw 0.8s ease-out forwards',
                 'shine': 'shine 3s linear infinite',
                 'subtle-glow': 'subtle-glow 3s ease-in-out infinite',
@@ -49,7 +59,7 @@
             },
             keyframes: {
                 'slide-in-up': {
-                    '0%': { transform: 'translateY(20px)', opacity: '0' },
+                    '0%': { transform: 'translateY(15px)', opacity: '0' },
                     '100%': { transform: 'translateY(0)', opacity: '1' },
                 },
                 'fade-in': {
@@ -65,7 +75,7 @@
                     '50%': { opacity: '0.7' },
                 },
                 'scale-up-fade-in': {
-                    '0%': { transform: 'scale(0.9)', opacity: '0' },
+                    '0%': { transform: 'scale(0.95)', opacity: '0' },
                     '100%': { transform: 'scale(1)', opacity: '1' },
                 },
                 'draw': {
@@ -92,6 +102,13 @@
       body {
         font-family: 'Inter', sans-serif;
         scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      /* Speed: Content Visibility for heavy sections */
+      #services, #reviews {
+        content-visibility: auto;
+        contain-intrinsic-size: 0 500px;
       }
       /* Custom Scrollbar */
       ::-webkit-scrollbar {
