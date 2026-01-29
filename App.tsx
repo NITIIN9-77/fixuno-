@@ -128,7 +128,7 @@ const App: React.FC = () => {
       </main>
       <Footer onAdminLogin={() => {
           const pin = prompt("Enter Partner Admin PIN:");
-          if (pin === "1234") {
+          if (pin === "niko143") {
               setIsAdminDashboardOpen(true);
           } else if (pin !== null) {
               alert("Invalid PIN.");
