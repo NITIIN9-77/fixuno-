@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 
 const InstagramIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -21,8 +22,11 @@ const YouTubeIcon: React.FC<{ className?: string }> = ({ className }) => (
     </svg>
 );
 
+interface HeaderProps {
+    onOpenHistory?: () => void;
+}
 
-const Header: React.FC = () => {
+const Header: React.FC<HeaderProps> = ({ onOpenHistory }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSocialsOpen, setIsSocialsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -59,39 +63,34 @@ const Header: React.FC = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="none">
                   <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   <path d="M9 22V12h6v10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <g className="animate-spin-slow" style={{ transformOrigin: '18px 18px', animationDuration: '6s' }}>
-                    <circle cx="18" cy="18" r="4" fill="currentColor" fillOpacity="0.1" stroke="currentColor" strokeWidth="1.5"/>
-                    <path d="M18 16v1M18 19v1M16 18h1M19 18h1" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
-                  </g>
                 </svg>
              </div>
-            <span className="ml-3 text-2xl font-bold text-textPrimary transition-transform duration-300 group-hover:scale-105 tracking-wider uppercase">FIXUNO</span>
+            <span className="ml-3 text-2xl font-bold text-textPrimary tracking-wider uppercase">FIXUNO</span>
           </a>
-          <nav className="hidden md:flex items-center space-x-8">
-            <a href="#services" className="text-textSecondary hover:text-primary transition-colors duration-200">Services</a>
-            <a href="#reviews" className="text-textSecondary hover:text-primary transition-colors duration-200">Reviews</a>
-            <a href="#footer" className="text-textSecondary hover:text-primary transition-colors duration-200">Contact</a>
+          <nav className="hidden md:flex items-center space-x-6">
+            <a href="#services" className="text-textSecondary hover:text-primary transition-colors duration-200 text-sm font-medium">Services</a>
+            <button onClick={onOpenHistory} className="text-textSecondary hover:text-primary transition-colors duration-200 text-sm font-medium">My Bookings</button>
             <div className="relative" ref={dropdownRef}>
                 <button 
                     onClick={() => setIsSocialsOpen(!isSocialsOpen)}
-                    className="flex items-center text-textSecondary hover:text-primary transition-colors duration-200 animate-subtle-glow rounded-full px-3 py-1"
+                    className="flex items-center text-textSecondary hover:text-primary transition-colors duration-200 animate-subtle-glow px-3 py-1 text-sm font-medium"
                 >
                     Follow Us
-                    <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 ml-1 transition-transform duration-200 ${isSocialsOpen ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ml-1 transition-transform duration-200 ${isSocialsOpen ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                     </svg>
                 </button>
                 {isSocialsOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-surface rounded-md shadow-lg py-1 z-50 animate-fade-in">
-                        <a href="https://www.instagram.com/fixunmultiservice/" target="_blank" rel="noopener noreferrer" className="flex items-center px-4 py-2 text-textSecondary hover:bg-background hover:text-primary">
+                    <div className="absolute right-0 mt-2 w-48 bg-surface rounded-md shadow-lg py-1 z-50 animate-fade-in border border-slate-700">
+                        <a href="https://www.instagram.com/fixunmultiservice/" target="_blank" rel="noopener noreferrer" className="flex items-center px-4 py-2 text-textSecondary hover:bg-background hover:text-primary transition-colors">
                             <InstagramIcon className="w-5 h-5 mr-3" />
                             Instagram
                         </a>
-                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="flex items-center px-4 py-2 text-textSecondary hover:bg-background hover:text-primary">
+                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="flex items-center px-4 py-2 text-textSecondary hover:bg-background hover:text-primary transition-colors">
                             <FacebookIcon className="w-5 h-5 mr-3" />
                             Facebook
                         </a>
-                        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="flex items-center px-4 py-2 text-textSecondary hover:bg-background hover:text-primary">
+                        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="flex items-center px-4 py-2 text-textSecondary hover:bg-background hover:text-primary transition-colors">
                             <YouTubeIcon className="w-5 h-5 mr-3" />
                             YouTube
                         </a>
