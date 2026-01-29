@@ -24,9 +24,10 @@ const YouTubeIcon: React.FC<{ className?: string }> = ({ className }) => (
 
 interface HeaderProps {
     onOpenHistory?: () => void;
+    onNavigate: (path: string) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onOpenHistory }) => {
+const Header: React.FC<HeaderProps> = ({ onOpenHistory, onNavigate }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSocialsOpen, setIsSocialsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -58,7 +59,7 @@ const Header: React.FC<HeaderProps> = ({ onOpenHistory }) => {
     <header className={`sticky top-0 z-40 transition-all duration-300 ${isScrolled ? 'bg-surface/80 shadow-lg backdrop-blur-md' : 'bg-transparent'}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <a href="#" className="flex items-center group cursor-pointer">
+          <button onClick={() => onNavigate('/')} className="flex items-center group cursor-pointer bg-transparent border-none">
              <div className="relative text-primary group-hover:text-blue-400 transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="none">
                   <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -66,9 +67,9 @@ const Header: React.FC<HeaderProps> = ({ onOpenHistory }) => {
                 </svg>
              </div>
             <span className="ml-3 text-2xl font-bold text-textPrimary tracking-wider uppercase">FIXUNO</span>
-          </a>
+          </button>
           <nav className="hidden md:flex items-center space-x-6">
-            <a href="#services" className="text-textSecondary hover:text-primary transition-colors duration-200 text-sm font-medium">Services</a>
+            <button onClick={() => onNavigate('/service')} className="text-textSecondary hover:text-primary transition-colors duration-200 text-sm font-medium">Services</button>
             <button onClick={onOpenHistory} className="text-textSecondary hover:text-primary transition-colors duration-200 text-sm font-medium">My Bookings</button>
             <div className="relative" ref={dropdownRef}>
                 <button 

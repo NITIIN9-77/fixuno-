@@ -24,9 +24,10 @@ const YouTubeIcon: React.FC<{ className?: string }> = ({ className }) => (
 
 interface FooterProps {
     onAdminLogin?: () => void;
+    onNavigate: (path: string) => void;
 }
 
-const Footer: React.FC<FooterProps> = ({ onAdminLogin }) => {
+const Footer: React.FC<FooterProps> = ({ onAdminLogin, onNavigate }) => {
   return (
     <footer id="footer" className="bg-background border-t border-slate-700">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -47,8 +48,12 @@ const Footer: React.FC<FooterProps> = ({ onAdminLogin }) => {
           <div>
             <h3 className="text-xl font-bold mb-4">Contact Us</h3>
             <ul className="space-y-2 text-textSecondary">
-              <li>Email: fixuno628@gmail.com</li>
-              <li>Phone: 8423979371</li>
+              <li>
+                <button onClick={() => onNavigate('/contact-us')} className="hover:text-primary transition-colors">Email: fixuno628@gmail.com</button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('/contact-us')} className="hover:text-primary transition-colors">Phone: 8423979371</button>
+              </li>
               <li className="mt-4 text-primary font-semibold">All Day Open</li>
             </ul>
           </div>
@@ -65,6 +70,7 @@ const Footer: React.FC<FooterProps> = ({ onAdminLogin }) => {
                     <YouTubeIcon className="w-7 h-7" />
                 </a>
             </div>
+            <button onClick={() => onNavigate('/follow-us')} className="mt-4 block text-xs text-textSecondary hover:text-primary underline">Learn More</button>
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-slate-700 text-center text-textSecondary/80">

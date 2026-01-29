@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Services from './components/Services';
@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import ServiceDetailModal from './components/ServiceDetailModal';
 import BookingHistoryModal from './components/BookingHistoryModal';
 import AdminDashboard from './components/AdminDashboard';
+import { SERVICES } from './constants';
 import type { Service, CartItem, SubService, User, Booking } from './types';
 
 const App: React.FC = () => {
@@ -37,27 +38,47 @@ const App: React.FC = () => {
     if (storedGlobalHistory) setGlobalBookings(JSON.parse(storedGlobalHistory));
   }, []);
 
-  // Back Button Logic
-  useEffect(() => {
-    const handlePopState = (event: PopStateEvent) => {
-      if (isServiceDetailOpen || isBookingFormOpen || isChatModalOpen || isHistoryOpen || isAdminDashboardOpen) {
-        setIsServiceDetailOpen(false);
-        setIsBookingFormOpen(false);
-        setIsChatModalOpen(false);
-        setIsHistoryOpen(false);
-        setIsAdminDashboardOpen(false);
-      }
-    };
+  // Helper to update URL without reload
+  const navigate = useCallback((path: string) => {
+    window.history.pushState({}, '', path);
+    handleRouting();
+  }, []);
 
-    window.addEventListener('popstate', handlePopState);
-    if (isServiceDetailOpen || isBookingFormOpen || isChatModalOpen || isHistoryOpen || isAdminDashboardOpen) {
-      window.history.pushState({ modalOpen: true }, '');
+  // Routing Logic
+  const handleRouting = useCallback(() => {
+    const path = window.location.pathname.toLowerCase();
+    
+    // Close everything first to reset state on nav
+    setIsServiceDetailOpen(false);
+    setIsBookingFormOpen(false);
+    setIsHistoryOpen(false);
+    setIsAdminDashboardOpen(false);
+
+    if (path === '/' || path === '') return;
+
+    if (path.includes('ac-repair')) {
+      const service = SERVICES.find(s => s.id === 'ac');
+      if (service) { setSelectedService(service); setIsServiceDetailOpen(true); }
+    } else if (path.includes('minor-home-repairs') || path.includes('minor%20home%20repairs')) {
+      const service = SERVICES.find(s => s.id === 'minor_work');
+      if (service) { setSelectedService(service); setIsServiceDetailOpen(true); }
+    } else if (path.includes('large-appliance-repair') || path.includes('large%20appliance%20repair')) {
+      const service = SERVICES.find(s => s.id === 'large-appliance');
+      if (service) { setSelectedService(service); setIsServiceDetailOpen(true); }
+    } else if (path.includes('service')) {
+      document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
+    } else if (path.includes('follow-us') || path.includes('contact-us')) {
+      document.getElementById('footer')?.scrollIntoView({ behavior: 'smooth' });
     }
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, [isServiceDetailOpen, isBookingFormOpen, isChatModalOpen, isHistoryOpen, isAdminDashboardOpen]);
+  }, []);
+
+  useEffect(() => {
+    handleRouting();
+    window.addEventListener('popstate', handleRouting);
+    return () => window.removeEventListener('popstate', handleRouting);
+  }, [handleRouting]);
 
   const handleBookingSuccess = (newBooking: Booking) => {
-    // 1. Update Global "Backend"
     const updatedGlobal = [newBooking, ...globalBookings];
     const updatedUser: User = {
         name: newBooking.userName,
@@ -65,18 +86,14 @@ const App: React.FC = () => {
         address: newBooking.userAddress,
         lastBookingDate: newBooking.date
     };
-
     setGlobalBookings(updatedGlobal);
     setUser(updatedUser);
-
-    // 2. Persist to "Backend"
     localStorage.setItem('fixuno_global_bookings', JSON.stringify(updatedGlobal));
     localStorage.setItem('fixuno_user', JSON.stringify(updatedUser));
-
-    // 3. Reset
     setIsBookingFormOpen(false);
     setCart([]); 
     setSelectedService(null);
+    navigate('/'); // Go home after success
   };
 
   const handleUpdateBookingStatus = (bookingId: string, newStatus: Booking['status']) => {
@@ -86,7 +103,7 @@ const App: React.FC = () => {
   };
 
   const handleDeleteBooking = (bookingId: string) => {
-      if (window.confirm("Are you sure you want to delete this booking from the backend?")) {
+      if (window.confirm("Are you sure you want to delete/cancel this booking?")) {
         const updated = globalBookings.filter(b => b.id !== bookingId);
         setGlobalBookings(updated);
         localStorage.setItem('fixuno_global_bookings', JSON.stringify(updated));
@@ -117,23 +134,27 @@ const App: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-textPrimary">
-      <Header onOpenHistory={() => setIsHistoryOpen(true)} />
+      <Header onOpenHistory={() => setIsHistoryOpen(true)} onNavigate={navigate} />
       <main className="flex-grow">
-        <Hero onBookNow={() => {
-          const mainServicesSection = document.getElementById('services');
-          if (mainServicesSection) mainServicesSection.scrollIntoView({ behavior: 'smooth' });
+        <Hero onBookNow={() => navigate('/service')} />
+        <Services onViewDetails={(s) => { 
+            setSelectedService(s); 
+            setIsServiceDetailOpen(true); 
+            // Update URL based on selection
+            if(s.id === 'ac') navigate('/ac-repair');
+            else if(s.id === 'minor_work') navigate('/minor-home-repairs');
+            else if(s.id === 'large-appliance') navigate('/large-appliance-repair');
         }} />
-        <Services onViewDetails={(s) => { setSelectedService(s); setIsServiceDetailOpen(true); }} />
         <Reviews />
       </main>
-      <Footer onAdminLogin={() => {
+      <Footer 
+        onAdminLogin={() => {
           const pin = prompt("Enter Partner Admin PIN:");
-          if (pin === "niko143") {
-              setIsAdminDashboardOpen(true);
-          } else if (pin !== null) {
-              alert("Invalid PIN.");
-          }
-      }} />
+          if (pin === "niko143") { setIsAdminDashboardOpen(true); } 
+          else if (pin !== null) { alert("Invalid PIN."); }
+        }} 
+        onNavigate={navigate}
+      />
 
       {isServiceDetailOpen && selectedService && (
         <ServiceDetailModal
@@ -141,7 +162,7 @@ const App: React.FC = () => {
           cart={cart}
           onAddToCart={handleAddToCart}
           onUpdateCartQuantity={handleUpdateCartQuantity}
-          onClose={() => setIsServiceDetailOpen(false)}
+          onClose={() => { setIsServiceDetailOpen(false); navigate('/'); }}
           onProceed={() => { setIsServiceDetailOpen(false); setIsBookingFormOpen(true); }}
         />
       )}
@@ -150,7 +171,7 @@ const App: React.FC = () => {
         <BookingForm
           cart={cart}
           userProfile={user}
-          onClose={() => setIsBookingFormOpen(false)}
+          onClose={() => { setIsBookingFormOpen(false); navigate('/'); }}
           onSuccess={handleBookingSuccess}
         />
       )}
@@ -158,7 +179,8 @@ const App: React.FC = () => {
       {isHistoryOpen && (
         <BookingHistoryModal 
             bookings={userBookings} 
-            onClose={() => setIsHistoryOpen(false)} 
+            onClose={() => { setIsHistoryOpen(false); navigate('/'); }} 
+            onDelete={handleDeleteBooking}
         />
       )}
 
