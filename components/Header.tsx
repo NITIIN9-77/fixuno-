@@ -30,6 +30,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ onOpenHistory, onNavigate }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSocialsOpen, setIsSocialsOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -55,23 +56,36 @@ const Header: React.FC<HeaderProps> = ({ onOpenHistory, onNavigate }) => {
     };
   }, []);
 
+  const handleNavClick = (path: string) => {
+    onNavigate(path);
+    setIsMobileMenuOpen(false);
+  };
+
+  const handleHistoryClick = () => {
+    onOpenHistory?.();
+    setIsMobileMenuOpen(false);
+  };
+
   return (
-    <header className={`sticky top-0 z-40 transition-all duration-300 ${isScrolled ? 'bg-surface/80 shadow-lg backdrop-blur-md' : 'bg-transparent'}`}>
+    <header className={`sticky top-0 z-40 transition-all duration-300 ${isScrolled || isMobileMenuOpen ? 'bg-surface shadow-lg backdrop-blur-md' : 'bg-transparent'}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <button onClick={() => onNavigate('/')} className="flex items-center group cursor-pointer bg-transparent border-none">
+          {/* Logo */}
+          <button onClick={() => handleNavClick('/')} className="flex items-center group cursor-pointer bg-transparent border-none z-50">
              <div className="relative text-primary group-hover:text-blue-400 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="none">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-9 w-9 md:h-10 md:w-10 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="none">
                   <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   <path d="M9 22V12h6v10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
              </div>
-            <span className="ml-3 text-2xl font-bold text-textPrimary tracking-wider uppercase">FIXUNO</span>
+            <span className="ml-2 md:ml-3 text-xl md:text-2xl font-bold text-textPrimary tracking-wider uppercase">FIXUNO</span>
           </button>
+
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            <button onClick={() => onNavigate('/service')} className="text-textSecondary hover:text-primary transition-colors duration-200 text-sm font-medium">Services</button>
-            <button onClick={() => onNavigate('/contact-us')} className="text-textSecondary hover:text-primary transition-colors duration-200 text-sm font-medium">Contact Us</button>
-            <button onClick={onOpenHistory} className="text-textSecondary hover:text-primary transition-colors duration-200 text-sm font-medium">My Bookings</button>
+            <button onClick={() => handleNavClick('/service')} className="text-textSecondary hover:text-primary transition-colors duration-200 text-sm font-medium">Services</button>
+            <button onClick={() => handleNavClick('/contact-us')} className="text-textSecondary hover:text-primary transition-colors duration-200 text-sm font-medium">Contact Us</button>
+            <button onClick={handleHistoryClick} className="text-textSecondary hover:text-primary transition-colors duration-200 text-sm font-medium">My Bookings</button>
             <div className="relative" ref={dropdownRef}>
                 <button 
                     onClick={() => setIsSocialsOpen(!isSocialsOpen)}
@@ -100,6 +114,70 @@ const Header: React.FC<HeaderProps> = ({ onOpenHistory, onNavigate }) => {
                 )}
             </div>
           </nav>
+
+          {/* Mobile Menu Button */}
+          <button 
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden p-2 text-textSecondary hover:text-primary transition-colors z-50"
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Drawer Menu */}
+      <div className={`fixed inset-0 bg-surface z-40 md:hidden transition-all duration-300 transform ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="flex flex-col h-full pt-20 px-6 space-y-8 overflow-y-auto pb-10">
+          <button 
+            onClick={() => handleNavClick('/service')} 
+            className="text-2xl font-bold text-textPrimary hover:text-primary transition-colors text-left border-b border-slate-800 pb-4"
+          >
+            Services
+          </button>
+          <button 
+            onClick={() => handleNavClick('/contact-us')} 
+            className="text-2xl font-bold text-textPrimary hover:text-primary transition-colors text-left border-b border-slate-800 pb-4"
+          >
+            Contact Us
+          </button>
+          <button 
+            onClick={handleHistoryClick} 
+            className="text-2xl font-bold text-textPrimary hover:text-primary transition-colors text-left border-b border-slate-800 pb-4"
+          >
+            My Bookings
+          </button>
+          
+          <div className="pt-4">
+            <h3 className="text-sm uppercase tracking-widest text-textSecondary font-bold mb-6">Follow Us</h3>
+            <div className="flex flex-col space-y-6">
+                <a href="https://www.instagram.com/fixunmultiservice/" target="_blank" rel="noopener noreferrer" className="flex items-center text-xl text-textSecondary hover:text-primary transition-colors">
+                    <InstagramIcon className="w-6 h-6 mr-4" />
+                    Instagram
+                </a>
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="flex items-center text-xl text-textSecondary hover:text-primary transition-colors">
+                    <FacebookIcon className="w-6 h-6 mr-4" />
+                    Facebook
+                </a>
+                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="flex items-center text-xl text-textSecondary hover:text-primary transition-colors">
+                    <YouTubeIcon className="w-6 h-6 mr-4" />
+                    YouTube
+                </a>
+            </div>
+          </div>
+
+          <div className="mt-auto pt-10 text-center">
+            <p className="text-textSecondary text-sm mb-4">Fixuno - Your #1 Partner</p>
+            <p className="text-primary font-bold">Call: 8423979371</p>
+          </div>
         </div>
       </div>
     </header>
