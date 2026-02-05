@@ -62,14 +62,13 @@ const App: React.FC = () => {
     if (path.includes('ac-repair')) {
       const service = SERVICES.find(s => s.id === 'ac');
       if (service) { setSelectedService(service); setIsServiceDetailOpen(true); }
-    } else if (path.includes('minor-home-repairs') || path.includes('minor%20home%20repairs')) {
+    } else if (path.includes('minor-home-repairs')) {
       const service = SERVICES.find(s => s.id === 'minor_work');
       if (service) { setSelectedService(service); setIsServiceDetailOpen(true); }
-    } else if (path.includes('large-appliance-repair') || path.includes('large%20appliance%20repair')) {
+    } else if (path.includes('large-appliance-repair')) {
       const service = SERVICES.find(s => s.id === 'large-appliance');
       if (service) { setSelectedService(service); setIsServiceDetailOpen(true); }
     } else if (path.includes('service')) {
-      // If it's just the service page, we might want to hide other things or scroll
       setTimeout(() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }), 100);
     } else if (path.includes('follow-us') || path.includes('contact-us')) {
       setTimeout(() => document.getElementById('footer')?.scrollIntoView({ behavior: 'smooth' }), 100);
@@ -144,7 +143,7 @@ const App: React.FC = () => {
     <div className="flex flex-col min-h-screen bg-background text-textPrimary">
       <Header onOpenHistory={() => setIsHistoryOpen(true)} onNavigate={navigate} />
       
-      <main className="flex-grow animate-fade-in">
+      <main className="flex-grow pt-20 animate-fade-in">
         {/* Only show Hero on Home Path */}
         {(currentPath === '/' || currentPath === '') && !isContactView && !isServiceView && (
           <Hero onBookNow={() => navigate('/service')} />
@@ -164,16 +163,25 @@ const App: React.FC = () => {
         {/* Contact Us Dedicated View */}
         {isContactView && (
             <div className="container mx-auto px-4 py-20 text-center animate-slide-in-up">
-                <h1 className="text-4xl font-black text-primary mb-6 uppercase tracking-widest">Contact Fixuno</h1>
-                <div className="bg-surface p-10 rounded-2xl border border-slate-700 max-w-xl mx-auto shadow-2xl">
-                    <p className="text-2xl font-bold mb-4">Phone: 8423979371</p>
-                    <p className="text-xl text-textSecondary mb-8">Email: fixuno628@gmail.com</p>
-                    <button 
-                        onClick={() => navigate('/')}
-                        className="bg-primary/20 text-primary border border-primary px-6 py-2 rounded-full hover:bg-primary hover:text-white transition-all"
-                    >
-                        Back to Home
-                    </button>
+                <h1 className="text-5xl md:text-7xl font-black text-textPrimary mb-8 uppercase tracking-tighter">CONTACT</h1>
+                <div className="bg-surface p-12 rounded-[40px] border border-slate-700 max-w-2xl mx-auto shadow-2xl space-y-8 relative overflow-hidden group">
+                    <div className="absolute top-0 left-0 w-2 h-full bg-primary group-hover:w-4 transition-all"></div>
+                    <div>
+                        <p className="text-[10px] text-textSecondary uppercase font-black tracking-[0.4em] mb-2">Priority Hotline</p>
+                        <p className="text-4xl font-black text-primary">8423979371</p>
+                    </div>
+                    <div>
+                        <p className="text-[10px] text-textSecondary uppercase font-black tracking-[0.4em] mb-2">Support Email</p>
+                        <p className="text-xl font-bold text-textPrimary">fixuno628@gmail.com</p>
+                    </div>
+                    <div className="pt-6 border-t border-slate-800">
+                        <button 
+                            onClick={() => navigate('/')}
+                            className="bg-primary text-white font-black px-12 py-4 rounded-full hover:scale-105 active:scale-95 transition-all uppercase tracking-widest text-xs shadow-xl shadow-primary/20"
+                        >
+                            Back to Home
+                        </button>
+                    </div>
                 </div>
             </div>
         )}
@@ -181,7 +189,7 @@ const App: React.FC = () => {
         {/* Reviews - Show on Home or Service View */}
         {!isContactView && <Reviews />}
 
-        {/* Dynamic Service Tracker - Added as requested */}
+        {/* Dynamic Service Tracker */}
         {!isContactView && <ServiceTracker />}
       </main>
 
