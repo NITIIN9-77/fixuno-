@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import ServiceDetailModal from './components/ServiceDetailModal';
 import BookingHistoryModal from './components/BookingHistoryModal';
 import AdminDashboard from './components/AdminDashboard';
+import ServiceTracker from './components/ServiceTracker';
 import { SERVICES } from './constants';
 import type { Service, CartItem, SubService, User, Booking } from './types';
 
@@ -179,6 +180,9 @@ const App: React.FC = () => {
 
         {/* Reviews - Show on Home or Service View */}
         {!isContactView && <Reviews />}
+
+        {/* Dynamic Service Tracker - Added as requested */}
+        {!isContactView && <ServiceTracker />}
       </main>
 
       <Footer 
