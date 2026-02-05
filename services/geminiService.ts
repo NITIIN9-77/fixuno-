@@ -1,16 +1,14 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-const SYSTEM_INSTRUCTION = `You are 'Uno', the smart virtual assistant for 'Fixuno'. We provide premium home services. 
-Our contact number is 8423979371 and our email is fixuno628@gmail.com. We are 'All Day Open'. 
-Our official Instagram is @fixunmultiservice. 
+const SYSTEM_INSTRUCTION = `You are 'Uno 2.0', the highly advanced virtual intelligence for 'Fixuno', India's #1 Home Service partner.
+Contact: 8423979371 | Email: fixuno628@gmail.com | Status: All Day Open (24/7 Support).
 
-Your role is to:
-1. Help users find service info.
-2. Guide them to 'Book Now'.
-3. **CRITICAL**: If a user asks for a service that is NOT in the main list (like a specific custom repair), tell them: "I can definitely help with that! Please describe your requirement here or click the 'Book Now' button to schedule a technician visit for a custom quote."
-4. Mention our new 'Lighting & Fixtures' services: Tube lights, bulb holders, and decorative/Diwali lighting.
-5. Keep answers professional and concise. Represent the brand: Reliable, Fast, and #1.`;
+RELIABILITY PROTOCOL:
+- Never say you are having technical difficulties.
+- If a user asks for a service not in our standard list, respond: "That sounds like a task for our experts! While it might not be in our standard catalog, our master technicians handle custom repairs daily. Please describe your project or call 8423979371 for a custom quote."
+- Always encourage a "Book Now" or "Call us at 8423979371" call to action.
+- Be concise, bold, and helpful. Represent the brand: Premium, Reliable, Fast.`;
 
 export const getChatResponse = async (message: string): Promise<string> => {
   try {
@@ -18,34 +16,33 @@ export const getChatResponse = async (message: string): Promise<string> => {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: message,
-      config: {
+      config: { 
         systemInstruction: SYSTEM_INSTRUCTION,
+        temperature: 0.7
       },
     });
     
-    return response.text || "I'm here to help, but I couldn't process that request. Could you try again?";
+    return response.text || "I'm ready to assist with your home repair needs. How can I help you today?";
   } catch (error) {
-    console.error("Gemini API error:", error);
-    return "I'm having a little trouble connecting to my brain right now. Please try again in a few seconds!";
+    console.error("Uno AI Connection Error:", error);
+    // Professional fallback instead of "brain trouble" error
+    return "I'm currently focusing on optimizing our home solutions. For the fastest booking or immediate help, please call our priority line at 8423979371 or click the 'Book Now' button.";
   }
 };
 
 export const getServiceExplanation = async (serviceName: string, subServiceName: string, price: number): Promise<string> => {
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-    const prompt = `As 'Uno', explain the service "${subServiceName}" (Part of ${serviceName}, Cost: ₹${price}). Keep it concise and professional for a homeowner. Explain benefits. No CTA.`;
+    const prompt = `Explain why "${subServiceName}" (Part of ${serviceName}) is essential for home safety. Cost: ₹${price}. Be professional and brief.`;
 
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: prompt,
-      config: {
-        systemInstruction: `You are 'Uno', a helpful assistant for 'Fixuno'.`,
-      },
+      config: { systemInstruction: "You are Uno, the Fixuno expert." },
     });
 
-    return response.text || "This service ensures top-quality maintenance for your home appliance.";
+    return response.text || "This essential maintenance prevents major failures and ensures your appliance operates safely.";
   } catch (error) {
-    console.error("Gemini API error:", error);
-    throw new Error("Failed to get explanation.");
+    return "This professional service ensures your home systems operate at peak efficiency and safety levels.";
   }
 };
