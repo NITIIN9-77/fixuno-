@@ -10,7 +10,6 @@ export interface SubService {
 
 export interface Service {
   id: string;
-  category: 'Repair' | 'Installation' | 'Maintenance';
   name: string;
   description: string;
   icon: React.ReactNode;
@@ -44,14 +43,4 @@ export interface Booking {
   userName: string;
   userPhone: string;
   userAddress: string;
-}
-
-export interface Review {
-  id: number;
-  name: string;
-  rating: number;
-  text: string;
-  date: string;
-  isVerified: boolean;
-  image?: string;
 }
