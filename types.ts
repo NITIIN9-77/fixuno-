@@ -10,7 +10,6 @@ export interface SubService {
 
 export interface Service {
   id: string;
-  category: 'Repair' | 'Installation' | 'Maintenance';
   name: string;
   description: string;
   icon: React.ReactNode;
