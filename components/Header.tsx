@@ -13,6 +13,7 @@ const Header: React.FC<HeaderProps> = ({ onOpenHistory, onNavigate }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchActive, setIsSearchActive] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
@@ -38,7 +39,7 @@ const Header: React.FC<HeaderProps> = ({ onOpenHistory, onNavigate }) => {
   };
 
   return (
-    <header className={`sticky top-0 z-40 transition-all duration-300 ${isScrolled || isMobileMenuOpen ? 'bg-surface shadow-2xl' : 'bg-transparent'}`}>
+    <header className={`sticky top-0 z-40 transition-all duration-300 ${isScrolled || isMobileMenuOpen ? 'bg-surface shadow-2xl backdrop-blur-md' : 'bg-transparent'}`}>
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-20">
           
@@ -53,8 +54,8 @@ const Header: React.FC<HeaderProps> = ({ onOpenHistory, onNavigate }) => {
             <span className="ml-2 text-xl font-black text-textPrimary tracking-widest uppercase">FIXUNO</span>
           </button>
 
-          {/* New Search Bar */}
-          <div className="hidden md:flex flex-1 mx-12 max-w-lg relative">
+          {/* Global Search Bar */}
+          <div className="hidden md:flex flex-1 mx-8 max-w-lg relative">
             <div className={`flex items-center w-full bg-slate-800/50 border ${isSearchActive ? 'border-primary ring-2 ring-primary/20' : 'border-slate-700'} rounded-full px-5 transition-all`}>
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-textSecondary mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                 <input 
@@ -83,19 +84,19 @@ const Header: React.FC<HeaderProps> = ({ onOpenHistory, onNavigate }) => {
             )}
           </div>
 
-          {/* New Dropdown Menu Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
+          {/* Categorized Desktop Navigation */}
+          <nav className="hidden lg:flex items-center space-x-6">
             <div className="relative group" onMouseEnter={() => setIsServicesOpen(true)} onMouseLeave={() => setIsServicesOpen(false)}>
-                <button className="flex items-center text-sm font-bold text-textSecondary hover:text-primary transition-colors py-6">
+                <button className="flex items-center text-sm font-bold text-textSecondary hover:text-primary transition-colors py-4">
                     SERVICES
                     <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 ml-1 transition-transform ${isServicesOpen ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                     </svg>
                 </button>
                 {isServicesOpen && (
-                    <div className="absolute right-0 top-full w-[440px] bg-surface rounded-2xl shadow-2xl p-8 border border-slate-700 grid grid-cols-2 gap-10 animate-fade-in">
+                    <div className="absolute right-0 top-full w-[400px] bg-surface rounded-2xl shadow-2xl p-6 border border-slate-700 grid grid-cols-2 gap-8 animate-fade-in">
                         <div>
-                            <h4 className="text-[10px] font-black text-primary uppercase mb-5 tracking-widest">Main Repairs</h4>
+                            <h4 className="text-[10px] font-black text-primary uppercase mb-4 tracking-widest">Repair Jobs</h4>
                             <div className="space-y-3">
                                 {SERVICES.filter(s => s.category === 'Repair').map(s => (
                                     <button key={s.id} onClick={() => handleNavClick(`/${s.id}`)} className="block text-sm text-textSecondary hover:text-textPrimary transition-colors">{s.name}</button>
@@ -103,7 +104,7 @@ const Header: React.FC<HeaderProps> = ({ onOpenHistory, onNavigate }) => {
                             </div>
                         </div>
                         <div>
-                            <h4 className="text-[10px] font-black text-primary uppercase mb-5 tracking-widest">Installation & Care</h4>
+                            <h4 className="text-[10px] font-black text-primary uppercase mb-4 tracking-widest">Installation & More</h4>
                             <div className="space-y-3">
                                 {SERVICES.filter(s => s.category !== 'Repair').map(s => (
                                     <button key={s.id} onClick={() => handleNavClick(`/${s.id}`)} className="block text-sm text-textSecondary hover:text-textPrimary transition-colors">{s.name}</button>
@@ -119,7 +120,7 @@ const Header: React.FC<HeaderProps> = ({ onOpenHistory, onNavigate }) => {
             <button onClick={onOpenHistory} className="bg-primary/10 text-primary border border-primary/20 px-5 py-2.5 rounded-full text-xs font-black hover:bg-primary hover:text-white transition-all">BOOKINGS</button>
           </nav>
 
-          {/* Mobile Menu Toggle */}
+          {/* Mobile UI Buttons */}
           <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="lg:hidden p-2 text-textSecondary z-50">
              <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
@@ -128,7 +129,7 @@ const Header: React.FC<HeaderProps> = ({ onOpenHistory, onNavigate }) => {
         </div>
       </div>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Drawer */}
       <div className={`fixed inset-0 bg-background/98 backdrop-blur-xl z-40 lg:hidden transition-transform duration-500 ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="flex flex-col h-full pt-24 px-8 space-y-6 overflow-y-auto pb-12">
             <div className="relative">
@@ -148,10 +149,10 @@ const Header: React.FC<HeaderProps> = ({ onOpenHistory, onNavigate }) => {
             <button onClick={() => { onOpenHistory?.(); setIsMobileMenuOpen(false); }} className="text-2xl font-black text-primary text-left">My Bookings</button>
             
             <div className="pt-8">
-                <h4 className="text-xs font-black text-textSecondary uppercase tracking-widest mb-6">Explore Services</h4>
+                <h4 className="text-xs font-black text-textSecondary uppercase tracking-widest mb-6">Service Categories</h4>
                 <div className="grid grid-cols-1 gap-4">
                     {SERVICES.map(s => (
-                        <button key={s.id} onClick={() => handleNavClick(`/${s.id}`)} className="text-lg font-bold text-textPrimary bg-surface p-5 rounded-xl border border-slate-800 text-left">{s.name}</button>
+                        <button key={s.id} onClick={() => handleNavClick(`/${s.id}`)} className="text-lg font-bold text-textPrimary bg-surface p-4 rounded-xl border border-slate-800 text-left">{s.name}</button>
                     ))}
                 </div>
             </div>
