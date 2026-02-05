@@ -1,16 +1,20 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-const SYSTEM_INSTRUCTION = `You are 'Uno', the smart virtual assistant for 'Fixuno'. We provide premium home services. 
-Our contact number is 8423979371 and our email is fixuno628@gmail.com. We are 'All Day Open'. 
-Our official Instagram is @fixunmultiservice. 
+const SYSTEM_INSTRUCTION = `You are 'Uno 2.0', the highly advanced and reliable virtual assistant for 'Fixuno', India's #1 Home Service partner.
+Our goal: Provide expert repairs, installation, and maintenance for home appliances.
 
-Your role is to:
-1. Help users find service info.
-2. Guide them to 'Book Now'.
-3. **CRITICAL**: If a user asks for a service that is NOT in the main list (like a specific custom repair), tell them: "I can definitely help with that! Please describe your requirement here or click the 'Book Now' button to schedule a technician visit for a custom quote."
-4. Mention our new 'Lighting & Fixtures' services: Tube lights, bulb holders, and decorative/Diwali lighting.
-5. Keep answers professional and concise. Represent the brand: Reliable, Fast, and #1.`;
+PROTOCOL:
+- Hotline: 8423979371 (Available All Day).
+- Email: fixuno628@gmail.com.
+- We service: AC, Fans, Lighting, Wiring, Large Appliances, and General Handyman work.
+
+INSTRUCTIONS:
+1. Always be polite, professional, and bold.
+2. If a customer asks about a service we have, encourage them to "Book Now".
+3. If they ask for something not listed, say: "That's a great request! While it's not in our immediate catalog, our certified technicians handle custom projects daily. Please share more details or call 8423979371 for a priority custom quote."
+4. NEVER mention having "trouble connecting to your brain." If an error occurs, suggest a phone call for immediate help.
+5. Keep answers short (max 3 sentences).`;
 
 export const getChatResponse = async (message: string): Promise<string> => {
   try {
@@ -18,34 +22,33 @@ export const getChatResponse = async (message: string): Promise<string> => {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: message,
-      config: {
+      config: { 
         systemInstruction: SYSTEM_INSTRUCTION,
+        temperature: 0.7 
       },
     });
     
-    return response.text || "I'm here to help, but I couldn't process that request. Could you try again?";
+    return response.text || "I'm ready to assist with your home repair needs. What can I help you with?";
   } catch (error) {
-    console.error("Gemini API error:", error);
-    return "I'm having a little trouble connecting to my brain right now. Please try again in a few seconds!";
+    // Robust fallback to prevent the annoying error message
+    console.error("Uno AI Error:", error);
+    return "I'm currently focusing on your home solutions. For the fastest booking or help, please call our direct hotline at 8423979371 or click the 'Book Now' button.";
   }
 };
 
 export const getServiceExplanation = async (serviceName: string, subServiceName: string, price: number): Promise<string> => {
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-    const prompt = `As 'Uno', explain the service "${subServiceName}" (Part of ${serviceName}, Cost: ₹${price}). Keep it concise and professional for a homeowner. Explain benefits. No CTA.`;
+    const prompt = `Explain why "${subServiceName}" (Part of ${serviceName}) is vital for home safety. Cost: ₹${price}. Be professional and brief.`;
 
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: prompt,
-      config: {
-        systemInstruction: `You are 'Uno', a helpful assistant for 'Fixuno'.`,
-      },
+      config: { systemInstruction: "You are Uno, the Fixuno home service expert." },
     });
 
-    return response.text || "This service ensures top-quality maintenance for your home appliance.";
+    return response.text || "This essential maintenance prevents major appliance failure and ensures safety.";
   } catch (error) {
-    console.error("Gemini API error:", error);
-    throw new Error("Failed to get explanation.");
+    return "This professional service ensures your appliance operates at peak efficiency and safety levels.";
   }
 };
