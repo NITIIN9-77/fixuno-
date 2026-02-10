@@ -2,38 +2,51 @@
 import React, { useState, useEffect } from 'react';
 
 const ServiceTracker: React.FC = () => {
-  // Persistence using localStorage
-  const [accomplishedCount, setAccomplishedCount] = useState<number>(() => {
-    const saved = localStorage.getItem('fixuno_tracker_count');
-    return saved ? parseInt(saved, 10) : 1290;
-  });
-
-  const [activeTechs, setActiveTechs] = useState<number>(11);
+  const [accomplishedCount, setAccomplishedCount] = useState<number>(3150);
+  const [activeTechs, setActiveTechs] = useState<number>(0);
+  const [isOffline, setIsOffline] = useState<boolean>(false);
 
   useEffect(() => {
-    // Increment simulation: Mimics 5-20 jobs per day
-    const countInterval = setInterval(() => {
-      setAccomplishedCount(prev => {
-        // High frequency check, low probability of increment for natural feel
-        const shouldIncrement = Math.random() > 0.85; 
-        const next = prev + (shouldIncrement ? 1 : 0);
-        localStorage.setItem('fixuno_tracker_count', next.toString());
-        return next;
-      });
-    }, 12000);
+    const calculateStats = () => {
+      const now = new Date();
+      
+      // 1. Calculate Services Accomplished (Synchronized across all devices)
+      // Base date: Jan 1, 2024. Using exact time elapsed to calculate growth.
+      const baseDate = new Date('2024-01-01T00:00:00').getTime(); 
+      const elapsedMs = now.getTime() - baseDate;
+      const elapsedDays = elapsedMs / (1000 * 60 * 60 * 24);
 
-    // Fluctuate technicians slightly to show "live" activity
-    const techInterval = setInterval(() => {
-      setActiveTechs(prev => {
-        const change = Math.random() > 0.5 ? 1 : -1;
-        return Math.max(9, Math.min(18, prev + (Math.random() > 0.7 ? change : 0)));
-      });
-    }, 15000);
+      // Start at 3000, grow by exactly 23.5 per day based on milliseconds elapsed.
+      // Everyone looking at the site at the exact same second will see the exact same number.
+      const currentAccomplished = 3000 + Math.floor(elapsedDays * 23.5);
+      setAccomplishedCount(currentAccomplished);
 
-    return () => {
-      clearInterval(countInterval);
-      clearInterval(techInterval);
+      // 2. Calculate Technicians on Field
+      const currentHour = now.getHours();
+      
+      // Offline from 11:00 PM (23) to 7:00 AM (7)
+      if (currentHour >= 23 || currentHour < 7) {
+        setIsOffline(true);
+        setActiveTechs(0);
+      } else {
+        setIsOffline(false);
+        // Create a pseudo-random number based on time that changes every 5 minutes.
+        // This ensures the number fluctuates between 50 and 70, but is the SAME for everyone.
+        const timeSeed = Math.floor(now.getTime() / (1000 * 60 * 5));
+        const pseudoRandom = Math.abs(Math.sin(timeSeed)); // Returns a value between 0 and 1
+        
+        // Scale to 50-70 range
+        const techs = 50 + Math.floor(pseudoRandom * 21);
+        setActiveTechs(techs);
+      }
     };
+
+    // Calculate immediately on load
+    calculateStats();
+
+    // Recalculate every minute to keep it live and synchronized
+    const interval = setInterval(calculateStats, 60000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -71,14 +84,24 @@ const ServiceTracker: React.FC = () => {
           <div className="text-center group">
             <div className="flex items-center justify-center space-x-3 mb-4">
                 <span className="flex h-4 w-4 relative">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-4 w-4 bg-green-500"></span>
+                    {isOffline ? (
+                        <span className="relative inline-flex rounded-full h-4 w-4 bg-slate-700"></span>
+                    ) : (
+                        <>
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-4 w-4 bg-green-500"></span>
+                        </>
+                    )}
                 </span>
-                <span className="text-green-500 text-sm font-black uppercase tracking-widest">Live Active</span>
+                <span className={`${isOffline ? 'text-slate-500' : 'text-green-500'} text-sm font-black uppercase tracking-widest transition-colors`}>
+                    {isOffline ? 'Offline (Resumes 7 AM)' : 'Live Active'}
+                </span>
             </div>
-            <h3 className="text-7xl md:text-9xl font-black text-white tracking-tighter mb-4 transition-transform duration-700 group-hover:scale-105">
+            
+            <h3 className={`text-7xl md:text-9xl font-black tracking-tighter mb-4 transition-transform duration-700 group-hover:scale-105 ${isOffline ? 'text-slate-700' : 'text-white'}`}>
               {activeTechs}
             </h3>
+            
             <span className="text-[10px] md:text-xs font-black text-slate-400 uppercase tracking-[0.4em]">
               Technicians On Field
             </span>
