@@ -16,7 +16,6 @@ const Services: React.FC<ServicesProps> = ({ onViewDetails, onCustomClick }) => 
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-8">
             <div className="max-w-2xl">
-              <p className="text-[10px] font-bold text-primary uppercase tracking-[0.5em] mb-4">Catalog</p>
               <h2 className="text-3xl md:text-6xl font-black text-textPrimary-light dark:text-textPrimary-dark tracking-tighter uppercase italic leading-none mb-6">
                 Full Service <br />
                 <span className="text-primary">Inventory.</span>

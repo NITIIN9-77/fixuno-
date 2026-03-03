@@ -124,32 +124,6 @@ const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose, onOpen }) => {
 
   return (
     <>
-      {!isOpen && (
-        <div 
-          className="fixed z-50 cursor-move transition-shadow"
-          style={{ left: `${position.x}px`, top: `${position.y}px`, touchAction: 'none' }}
-          onMouseDown={handleMouseDown}
-          onTouchStart={handleMouseDown}
-          onClick={handleClick}
-        >
-          <button 
-            className="bg-primary text-white rounded-full p-4 shadow-2xl hover:brightness-110 active:scale-95 transition-transform animate-glow relative group"
-            aria-label="Drag to move, click to chat"
-          >
-            {/* Drag Handle UI */}
-            <div className="absolute -top-1 -left-1 bg-white/20 rounded-full p-1 group-hover:bg-white/40 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M4 8h16M4 16h16" />
-              </svg>
-            </div>
-            
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-          </button>
-        </div>
-      )}
-
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/60 backdrop-blur-sm animate-fade-in" onClick={onClose}>
           <div 

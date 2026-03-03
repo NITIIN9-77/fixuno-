@@ -33,12 +33,6 @@ const Hero: React.FC<HeroProps> = ({ onBookNow }) => {
           </p>
           
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 md:gap-8">
-            <button 
-              onClick={onBookNow}
-              className="bg-primary text-white font-black px-10 py-4 rounded-full hover:scale-105 active:scale-95 transition-all uppercase tracking-widest text-xs shadow-2xl shadow-primary/20"
-            >
-              Book Appointment
-            </button>
           </div>
         </div>
       </div>

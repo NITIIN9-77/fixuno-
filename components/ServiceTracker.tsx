@@ -16,9 +16,9 @@ const ServiceTracker: React.FC = () => {
       const elapsedMs = now.getTime() - baseDate;
       const elapsedDays = elapsedMs / (1000 * 60 * 60 * 24);
 
-      // Start at 3000, grow by exactly 23.5 per day based on milliseconds elapsed.
+      // Start at 3000, grow by exactly 15 per day based on milliseconds elapsed.
       // Everyone looking at the site at the exact same second will see the exact same number.
-      const currentAccomplished = 3000 + Math.floor(elapsedDays * 23.5);
+      const currentAccomplished = 3000 + Math.floor(elapsedDays * 15);
       setAccomplishedCount(currentAccomplished);
 
       // 2. Calculate Technicians on Field
@@ -31,12 +31,12 @@ const ServiceTracker: React.FC = () => {
       } else {
         setIsOffline(false);
         // Create a pseudo-random number based on time that changes every 5 minutes.
-        // This ensures the number fluctuates between 50 and 70, but is the SAME for everyone.
+        // This ensures the number fluctuates between 80 and 90, but is the SAME for everyone.
         const timeSeed = Math.floor(now.getTime() / (1000 * 60 * 5));
         const pseudoRandom = Math.abs(Math.sin(timeSeed)); // Returns a value between 0 and 1
         
-        // Scale to 50-70 range
-        const techs = 50 + Math.floor(pseudoRandom * 21);
+        // Scale to 80-90 range
+        const techs = 80 + Math.floor(pseudoRandom * 11);
         setActiveTechs(techs);
       }
     };
