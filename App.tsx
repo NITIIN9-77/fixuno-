@@ -1,18 +1,18 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
+import QuickServiceGrid from './components/QuickServiceGrid';
 import Services from './components/Services';
 import Reviews from './components/Reviews';
-import BookingForm from './components/BookingForm';
-import ChatModal from './components/ChatModal';
 import Footer from './components/Footer';
-import ServiceDetailModal from './components/ServiceDetailModal';
-import BookingHistoryModal from './components/BookingHistoryModal';
-import AdminDashboard from './components/AdminDashboard';
 import ServiceTracker from './components/ServiceTracker';
 import { SERVICES } from './constants';
 import type { Service, CartItem, SubService, User, Booking } from './types';
+
+// Lazy load modals for better initial performance
+const BookingForm = lazy(() => import('./components/BookingForm'));
+const ServiceDetailModal = lazy(() => import('./components/ServiceDetailModal'));
 
 const App: React.FC = () => {
   // Navigation State
@@ -21,7 +21,6 @@ const App: React.FC = () => {
   // Modal states
   const [isServiceDetailOpen, setIsServiceDetailOpen] = useState<boolean>(false);
   const [isBookingFormOpen, setIsBookingFormOpen] = useState<boolean>(false);
-  const [isChatModalOpen, setIsChatModalOpen] = useState<boolean>(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
   const [isAdminDashboardOpen, setIsAdminDashboardOpen] = useState<boolean>(false);
   
@@ -82,39 +81,47 @@ const App: React.FC = () => {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  const handleBookingSuccess = (newBooking: Booking) => {
-    const updatedGlobal = [newBooking, ...globalBookings];
+  const handleBookingSuccess = useCallback((newBooking: Booking) => {
+    setGlobalBookings(prev => {
+      const updatedGlobal = [newBooking, ...prev];
+      localStorage.setItem('fixuno_global_bookings', JSON.stringify(updatedGlobal));
+      return updatedGlobal;
+    });
+    
     const updatedUser: User = {
         name: newBooking.userName,
         phone: newBooking.userPhone,
         address: newBooking.userAddress,
         lastBookingDate: newBooking.date
     };
-    setGlobalBookings(updatedGlobal);
     setUser(updatedUser);
-    localStorage.setItem('fixuno_global_bookings', JSON.stringify(updatedGlobal));
     localStorage.setItem('fixuno_user', JSON.stringify(updatedUser));
+    
     setIsBookingFormOpen(false);
     setCart([]); 
     setSelectedService(null);
     navigate('/'); 
-  };
+  }, [navigate]);
 
-  const handleUpdateBookingStatus = (bookingId: string, newStatus: Booking['status']) => {
-    const updated = globalBookings.map(b => b.id === bookingId ? { ...b, status: newStatus } : b);
-    setGlobalBookings(updated);
-    localStorage.setItem('fixuno_global_bookings', JSON.stringify(updated));
-  };
+  const handleUpdateBookingStatus = useCallback((bookingId: string, newStatus: Booking['status']) => {
+    setGlobalBookings(prev => {
+      const updated = prev.map(b => b.id === bookingId ? { ...b, status: newStatus } : b);
+      localStorage.setItem('fixuno_global_bookings', JSON.stringify(updated));
+      return updated;
+    });
+  }, []);
 
-  const handleDeleteBooking = (bookingId: string) => {
+  const handleDeleteBooking = useCallback((bookingId: string) => {
       if (window.confirm("Are you sure you want to delete/cancel this booking?")) {
-        const updated = globalBookings.filter(b => b.id !== bookingId);
-        setGlobalBookings(updated);
-        localStorage.setItem('fixuno_global_bookings', JSON.stringify(updated));
+        setGlobalBookings(prev => {
+          const updated = prev.filter(b => b.id !== bookingId);
+          localStorage.setItem('fixuno_global_bookings', JSON.stringify(updated));
+          return updated;
+        });
       }
-  };
+  }, []);
 
-  const handleAddToCart = (subService: SubService, parentServiceName: string) => {
+  const handleAddToCart = useCallback((subService: SubService, parentServiceName: string) => {
     setCart(prevCart => {
       const existingItem = prevCart.find(item => item.id === subService.id);
       if (existingItem) {
@@ -124,14 +131,14 @@ const App: React.FC = () => {
       }
       return [...prevCart, { ...subService, quantity: 1, parentServiceName }];
     });
-  };
+  }, []);
 
-  const handleUpdateCartQuantity = (subServiceId: string, quantity: number) => {
+  const handleUpdateCartQuantity = useCallback((subServiceId: string, quantity: number) => {
     setCart(prevCart => {
       if (quantity <= 0) return prevCart.filter(item => item.id !== subServiceId);
       return prevCart.map(item => item.id === subServiceId ? { ...item, quantity } : item);
     });
-  };
+  }, []);
 
   const userBookings = globalBookings.filter(b => b.userPhone === user?.phone);
 
@@ -140,13 +147,22 @@ const App: React.FC = () => {
   const isServiceView = currentPath.includes('service');
 
   return (
-    <div className="flex flex-col min-h-screen bg-background text-textPrimary">
-      <Header onOpenHistory={() => setIsHistoryOpen(true)} onNavigate={navigate} />
+    <div className="flex flex-col min-h-screen bg-background-light dark:bg-background-dark text-textPrimary-light dark:text-textPrimary-dark">
+      <Header onNavigate={navigate} />
       
-      <main className="flex-grow pt-20 animate-fade-in">
+      <main className={`flex-grow animate-fade-in ${currentPath === '/' || currentPath === '' ? 'pt-16' : 'pt-20'}`}>
         {/* Only show Hero on Home Path */}
         {(currentPath === '/' || currentPath === '') && !isContactView && !isServiceView && (
-          <Hero onBookNow={() => navigate('/service')} />
+          <div className="flex flex-col">
+            <QuickServiceGrid onServiceClick={(s) => {
+                setSelectedService(s); 
+                setIsServiceDetailOpen(true); 
+                if(s.id === 'ac') navigate('/ac-repair');
+                else if(s.id === 'minor_work') navigate('/minor-home-repairs');
+                else if(s.id === 'large-appliance') navigate('/large-appliance-repair');
+            }} />
+            <Hero onBookNow={() => navigate('/service')} />
+          </div>
         )}
 
         {/* Services Section */}
@@ -194,56 +210,30 @@ const App: React.FC = () => {
       </main>
 
       <Footer 
-        onAdminLogin={() => {
-          const pin = prompt("Enter Partner Admin PIN:");
-          if (pin === "niko143") { setIsAdminDashboardOpen(true); } 
-          else if (pin !== null) { alert("Invalid PIN."); }
-        }} 
         onNavigate={navigate}
       />
 
-      {isServiceDetailOpen && selectedService && (
-        <ServiceDetailModal
-          service={selectedService}
-          cart={cart}
-          onAddToCart={handleAddToCart}
-          onUpdateCartQuantity={handleUpdateCartQuantity}
-          onClose={() => { setIsServiceDetailOpen(false); navigate(isServiceView ? '/service' : '/'); }}
-          onProceed={() => { setIsServiceDetailOpen(false); setIsBookingFormOpen(true); }}
-        />
-      )}
-      
-      {isBookingFormOpen && (
-        <BookingForm
-          cart={cart}
-          userProfile={user}
-          onClose={() => { setIsBookingFormOpen(false); navigate('/'); }}
-          onSuccess={handleBookingSuccess}
-        />
-      )}
-
-      {isHistoryOpen && (
-        <BookingHistoryModal 
-            bookings={userBookings} 
-            onClose={() => { setIsHistoryOpen(false); navigate('/'); }} 
-            onDelete={handleDeleteBooking}
-        />
-      )}
-
-      {isAdminDashboardOpen && (
-          <AdminDashboard 
-            bookings={globalBookings}
-            onClose={() => setIsAdminDashboardOpen(false)}
-            onUpdateStatus={handleUpdateBookingStatus}
-            onDelete={handleDeleteBooking}
+      <Suspense fallback={null}>
+        {isServiceDetailOpen && selectedService && (
+          <ServiceDetailModal
+            service={selectedService}
+            cart={cart}
+            onAddToCart={handleAddToCart}
+            onUpdateCartQuantity={handleUpdateCartQuantity}
+            onClose={() => { setIsServiceDetailOpen(false); navigate(isServiceView ? '/service' : '/'); }}
+            onProceed={() => { setIsServiceDetailOpen(false); setIsBookingFormOpen(true); }}
           />
-      )}
-
-      <ChatModal 
-        isOpen={isChatModalOpen}
-        onClose={() => setIsChatModalOpen(false)}
-        onOpen={() => setIsChatModalOpen(true)}
-      />
+        )}
+        
+        {isBookingFormOpen && (
+          <BookingForm
+            cart={cart}
+            userProfile={user}
+            onClose={() => { setIsBookingFormOpen(false); navigate('/'); }}
+            onSuccess={handleBookingSuccess}
+          />
+        )}
+      </Suspense>
     </div>
   );
 };

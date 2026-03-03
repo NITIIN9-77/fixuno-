@@ -125,71 +125,71 @@ const BookingForm: React.FC<BookingFormProps> = ({ cart, userProfile, onClose, o
 
   if (submissionStatus === 'success') {
       return (
-          <div className="fixed inset-0 bg-background/50 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
-              <div className="bg-surface rounded-lg shadow-2xl p-8 text-center animate-scale-up-fade-in animate-glow-success">
-                  <div className="mb-4 text-green-400">
+          <div className="fixed inset-0 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md flex items-center justify-center z-50 animate-fade-in">
+              <div className="bg-background-light dark:bg-background-dark rounded-3xl shadow-2xl p-10 text-center animate-scale-up-fade-in animate-glow-success border border-black/5 dark:border-white/5 max-w-md mx-4">
+                  <div className="mb-6 text-emerald-500">
                     <svg className="h-20 w-20 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <h2 className="text-3xl font-bold text-textPrimary mb-3">Booking Saved!</h2>
-                  <p className="text-textSecondary text-lg mb-4">Your details are securely stored in our backend. A technician will contact you shortly.</p>
-                  <p className="text-sm text-primary font-mono bg-background/50 p-2 rounded">Booking ID: FIX-{Math.random().toString(36).substr(2, 9).toUpperCase()}</p>
+                  <h2 className="text-2xl font-black text-textPrimary-light dark:text-textPrimary-dark mb-4 uppercase tracking-widest italic">Booking Saved!</h2>
+                  <p className="text-textSecondary-light dark:text-textSecondary-dark text-sm mb-8">Your details are securely stored. A technician will contact you shortly.</p>
+                  <p className="text-[10px] text-primary font-black bg-primary/10 p-3 rounded-xl uppercase tracking-[0.2em]">Booking ID: FIX-{Math.random().toString(36).substr(2, 9).toUpperCase()}</p>
               </div>
           </div>
       );
   }
 
   return (
-    <div className="fixed inset-0 bg-background/50 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in" onClick={onClose}>
-      <div className="bg-surface rounded-lg shadow-2xl p-8 w-full max-w-lg m-4 relative animate-slide-in-up overflow-y-auto max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
-        <button type="button" onClick={onClose} aria-label="Close" className="absolute top-4 right-4 text-gray-400 hover:text-gray-200">
+    <div className="fixed inset-0 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md flex items-center justify-center z-50 animate-fade-in" onClick={onClose}>
+      <div className="bg-background-light dark:bg-background-dark rounded-3xl shadow-2xl p-8 w-full max-w-lg m-4 relative animate-slide-in-up overflow-y-auto max-h-[90vh] border border-black/5 dark:border-white/5" onClick={(e) => e.stopPropagation()}>
+        <button type="button" onClick={onClose} aria-label="Close" className="absolute top-6 right-6 text-textSecondary-light dark:text-textSecondary-dark hover:text-primary transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
         </button>
 
-        <h2 className="text-2xl font-bold text-textPrimary mb-2">Secure Backend Booking</h2>
-        <p className="text-sm text-textSecondary mb-6 italic">Your details will be synchronized with our server for service tracking.</p>
+        <h2 className="text-xl font-black text-textPrimary-light dark:text-textPrimary-dark mb-2 uppercase tracking-widest italic">Secure Booking</h2>
+        <p className="text-[10px] text-textSecondary-light dark:text-textSecondary-dark mb-8 uppercase tracking-widest">Your details will be synchronized with our server.</p>
 
-        <div className="text-textSecondary mb-6 bg-background/50 p-4 rounded-md">
-            <p className="font-semibold text-primary mb-2">Order Summary:</p>
-            <ul className="space-y-1 max-h-32 overflow-y-auto divide-y divide-slate-700/50 py-2">
+        <div className="text-textSecondary-light dark:text-textSecondary-dark mb-8 bg-black/[0.02] dark:bg-white/[0.02] p-6 rounded-2xl border border-black/5 dark:border-white/5">
+            <p className="text-[10px] font-black text-primary mb-4 uppercase tracking-widest">Order Summary</p>
+            <ul className="space-y-3 max-h-32 overflow-y-auto py-2">
                 {cart.map(item => (
-                    <li key={item.id} className="flex justify-between items-center text-sm pt-2">
-                        <span>{item.name} <span className="text-textSecondary/80">x{item.quantity}</span></span>
-                        <span className="font-medium text-textPrimary">₹{item.price * item.quantity}</span>
+                    <li key={item.id} className="flex justify-between items-center text-xs">
+                        <span className="font-bold text-textPrimary-light dark:text-textPrimary-dark">{item.name} <span className="text-textSecondary-light/50 font-normal">x{item.quantity}</span></span>
+                        <span className="font-black text-textPrimary-light dark:text-textPrimary-dark">₹{item.price * item.quantity}</span>
                     </li>
                 ))}
             </ul>
-            <div className="flex justify-between font-bold text-textPrimary mt-2 text-lg border-t border-slate-700 pt-2">
-                <span>Total Amount</span>
+            <div className="flex justify-between font-black text-textPrimary-light dark:text-textPrimary-dark mt-4 text-lg border-t border-black/5 dark:border-white/5 pt-4">
+                <span className="uppercase tracking-tighter italic">Total</span>
                 <span>₹{total}</span>
             </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-textSecondary">Full Name</label>
-            <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} className="mt-1 block w-full px-3 py-2 bg-background border border-slate-600 rounded-md text-textPrimary focus:ring-primary focus:border-primary" required />
+            <label htmlFor="name" className="block text-[10px] font-black text-textSecondary-light dark:text-textSecondary-dark uppercase tracking-widest mb-2">Full Name</label>
+            <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} className="w-full bg-transparent border-b border-black/10 dark:border-white/10 py-3 text-textPrimary-light dark:text-textPrimary-dark focus:outline-none focus:border-primary transition-colors placeholder:text-textSecondary-light/30" placeholder="John Doe" required />
           </div>
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-textSecondary">Phone Number</label>
-            <input type="tel" id="phone" value={phone} onChange={(e) => setPhone(e.target.value)} className="mt-1 block w-full px-3 py-2 bg-background border border-slate-600 rounded-md text-textPrimary focus:ring-primary focus:border-primary" required />
-            {formErrors.phone && <p className="mt-1 text-sm text-red-400">{formErrors.phone}</p>}
+            <label htmlFor="phone" className="block text-[10px] font-black text-textSecondary-light dark:text-textSecondary-dark uppercase tracking-widest mb-2">Phone Number</label>
+            <input type="tel" id="phone" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full bg-transparent border-b border-black/10 dark:border-white/10 py-3 text-textPrimary-light dark:text-textPrimary-dark focus:outline-none focus:border-primary transition-colors placeholder:text-textSecondary-light/30" placeholder="8423979371" required />
+            {formErrors.phone && <p className="mt-2 text-[10px] text-red-500 font-bold uppercase tracking-widest">{formErrors.phone}</p>}
           </div>
           <div>
-            <label htmlFor="address" className="block text-sm font-medium text-textSecondary">Service Address</label>
-            <textarea id="address" value={address} onChange={(e) => setAddress(e.target.value)} rows={3} className="mt-1 block w-full px-3 py-2 bg-background border border-slate-600 rounded-md text-textPrimary focus:ring-primary focus:border-primary" required></textarea>
-            <button type="button" onClick={handleGetLocation} disabled={isLocating} className="mt-2 text-sm text-primary hover:underline">
-              {isLocating ? 'Accessing GPS...' : 'Fetch Location from Browser'}
+            <label htmlFor="address" className="block text-[10px] font-black text-textSecondary-light dark:text-textSecondary-dark uppercase tracking-widest mb-2">Service Address</label>
+            <textarea id="address" value={address} onChange={(e) => setAddress(e.target.value)} rows={3} className="w-full bg-transparent border border-black/10 dark:border-white/10 rounded-2xl p-4 text-textPrimary-light dark:text-textPrimary-dark focus:outline-none focus:border-primary transition-colors placeholder:text-textSecondary-light/30 resize-none" placeholder="Enter your full address..." required></textarea>
+            <button type="button" onClick={handleGetLocation} disabled={isLocating} className="mt-3 text-[10px] font-black text-primary hover:text-primary/80 transition-colors uppercase tracking-widest">
+              {isLocating ? '[ Accessing GPS... ]' : '[ Fetch Location from Browser ]'}
             </button>
           </div>
-          {submissionError && <p className="text-red-400 text-center bg-red-500/10 p-3 rounded-md text-sm">{submissionError}</p>}
-          <div className="flex justify-end pt-4 space-x-3">
-            <button type="button" onClick={onClose} disabled={submissionStatus === 'submitting'} className="px-4 py-2 text-textSecondary hover:text-white transition-colors">Cancel</button>
-            <button type="submit" disabled={submissionStatus === 'submitting'} className="bg-primary text-white font-bold py-2 px-8 rounded-md hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50">
-                {submissionStatus === 'submitting' ? 'Saving to Backend...' : 'Finalize Booking'}
+          {submissionError && <p className="text-red-500 text-center bg-red-500/10 p-4 rounded-2xl text-[10px] font-bold uppercase tracking-widest">{submissionError}</p>}
+          <div className="flex justify-end pt-6 space-x-4">
+            <button type="button" onClick={onClose} disabled={submissionStatus === 'submitting'} className="text-[10px] font-black text-textSecondary-light dark:text-textSecondary-dark hover:text-primary uppercase tracking-widest transition-colors">Cancel</button>
+            <button type="submit" disabled={submissionStatus === 'submitting'} className="bg-primary text-white font-black py-4 px-10 rounded-full hover:brightness-110 transition-all disabled:opacity-50 text-xs uppercase tracking-widest shadow-xl shadow-primary/20">
+                {submissionStatus === 'submitting' ? 'Saving...' : 'Finalize Booking'}
             </button>
           </div>
         </form>

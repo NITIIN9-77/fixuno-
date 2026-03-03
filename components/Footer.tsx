@@ -29,52 +29,58 @@ interface FooterProps {
 
 const Footer: React.FC<FooterProps> = ({ onAdminLogin, onNavigate }) => {
   return (
-    <footer id="footer" className="bg-background border-t border-slate-700">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-          <div className="md:col-span-1">
-            <h3 className="text-xl font-bold mb-4 text-primary tracking-wider uppercase">FIXUNO</h3>
-            <p className="text-textSecondary">Reliable. Fast. The one solution for all your home needs.</p>
-            <button 
-                onClick={onAdminLogin}
-                className="mt-6 text-xs text-textSecondary hover:text-primary transition-colors flex items-center mx-auto md:mx-0 opacity-50 hover:opacity-100"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 00-2 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-                Partner Admin Login
-            </button>
+    <footer id="footer" className="bg-background-light dark:bg-background-dark border-t border-black/5 dark:border-white/5 py-20">
+      <div className="container mx-auto px-6 lg:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+          <div className="lg:col-span-5">
+            <h3 className="text-2xl font-black text-textPrimary-light dark:text-textPrimary-dark tracking-tighter uppercase italic mb-8">FIXUNO<span className="text-primary">.</span></h3>
+            <p className="text-textSecondary-light dark:text-textSecondary-dark text-sm leading-relaxed max-w-sm mb-12">
+              The definitive standard for premium home maintenance. Delivering excellence through certified expertise and meticulous attention to detail.
+            </p>
+            <div className="flex space-x-6">
+              {[InstagramIcon, FacebookIcon, YouTubeIcon].map((Icon, i) => (
+                <a key={i} href="#" className="text-textSecondary-light dark:text-textSecondary-dark hover:text-primary transition-colors">
+                  <Icon className="w-5 h-5" />
+                </a>
+              ))}
+            </div>
           </div>
-          <div>
-            <h3 className="text-xl font-bold mb-4">Contact Us</h3>
-            <ul className="space-y-2 text-textSecondary">
-              <li>
-                <button onClick={() => onNavigate('/contact-us')} className="hover:text-primary transition-colors">Email: fixuno628@gmail.com</button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('/contact-us')} className="hover:text-primary transition-colors">Phone: 8423979371</button>
-              </li>
-              <li className="mt-4 text-primary font-semibold">All Day Open</li>
+
+          <div className="lg:col-span-3">
+            <h4 className="text-[10px] font-bold text-textPrimary-light dark:text-textPrimary-dark uppercase tracking-[0.4em] mb-8">Navigation</h4>
+            <ul className="space-y-4">
+              {['Services', 'Reviews', 'Contact Us'].map((item) => (
+                <li key={item}>
+                  <button 
+                    onClick={() => onNavigate(`/${item.toLowerCase().replace(' ', '-')}`)}
+                    className="text-sm text-textSecondary-light dark:text-textSecondary-dark hover:text-primary transition-colors"
+                  >
+                    {item}
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
-           <div>
-            <h3 className="text-xl font-bold mb-4">Follow Us</h3>
-            <div className="flex justify-center md:justify-start space-x-6">
-                <a href="https://www.instagram.com/fixunmultiservice/" target="_blank" rel="noopener noreferrer" className="text-textSecondary hover:text-primary transition-colors animate-subtle-glow rounded-full p-1">
-                    <InstagramIcon className="w-7 h-7" />
-                </a>
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-textSecondary hover:text-primary transition-colors animate-subtle-glow rounded-full p-1">
-                    <FacebookIcon className="w-7 h-7" />
-                </a>
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-textSecondary hover:text-primary transition-colors animate-subtle-glow rounded-full p-1">
-                    <YouTubeIcon className="w-7 h-7" />
-                </a>
+
+          <div className="lg:col-span-4">
+            <h4 className="text-[10px] font-bold text-textPrimary-light dark:text-textPrimary-dark uppercase tracking-[0.4em] mb-8">Contact</h4>
+            <div className="space-y-6">
+              <div>
+                <p className="text-[10px] text-textSecondary-light dark:text-textSecondary-dark uppercase tracking-widest mb-1">Direct Line</p>
+                <a href="tel:8423979371" className="text-lg font-bold text-textPrimary-light dark:text-textPrimary-dark hover:text-primary transition-colors">8423979371</a>
+              </div>
+              <div>
+                <p className="text-[10px] text-textSecondary-light dark:text-textSecondary-dark uppercase tracking-widest mb-1">Email Support</p>
+                <a href="mailto:fixuno628@gmail.com" className="text-sm font-bold text-textPrimary-light dark:text-textPrimary-dark hover:text-primary transition-colors">fixuno628@gmail.com</a>
+              </div>
             </div>
-            <button onClick={() => onNavigate('/follow-us')} className="mt-4 block text-xs text-textSecondary hover:text-primary underline">Learn More</button>
           </div>
         </div>
-        <div className="mt-8 pt-8 border-t border-slate-700 text-center text-textSecondary/80">
-          <p>&copy; {new Date().getFullYear()} Fixuno. All rights reserved.</p>
+
+        <div className="mt-20 pt-8 border-t border-black/5 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-[10px] text-textSecondary-light dark:text-textSecondary-dark uppercase tracking-widest">
+            &copy; {new Date().getFullYear()} Fixuno. All Rights Reserved.
+          </p>
         </div>
       </div>
     </footer>

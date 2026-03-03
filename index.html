@@ -32,67 +32,56 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+      // Theme Initialization to prevent flicker
+      (function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+          document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+
       tailwind.config = {
+        darkMode: 'class',
         theme: {
           extend: {
             colors: {
-              primary: '#3b82f6', // blue-500
-              background: '#030712', // gray-950
-              surface: '#111827',    // gray-900
-              textPrimary: '#f9fafb', // gray-50
-              textSecondary: '#9ca3af', // gray-400
+              primary: '#007AFF',
+              background: {
+                light: '#FFFFFF',
+                dark: '#000000'
+              },
+              surface: {
+                light: '#F2F2F7',
+                dark: '#0A0A0A'
+              },
+              textPrimary: {
+                light: '#000000',
+                dark: '#FFFFFF'
+              },
+              textSecondary: {
+                light: '#8E8E93',
+                dark: '#666666'
+              },
             },
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
             },
             animation: {
-                'slide-in-up': 'slide-in-up 0.4s ease-out forwards', // Speed: Shortened duration
-                'fade-in': 'fade-in 0.3s ease-out forwards',         // Speed: Shortened duration
-                'glow': 'glow 2.5s ease-in-out infinite',
-                'pulse-subtle': 'pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                'scale-up-fade-in': 'scale-up-fade-in 0.3s ease-out forwards',
-                'draw': 'draw 0.8s ease-out forwards',
-                'shine': 'shine 3s linear infinite',
-                'subtle-glow': 'subtle-glow 3s ease-in-out infinite',
-                'glow-success': 'glow-success 2s ease-in-out infinite',
-                'spin-slow': 'spin 3s linear infinite'
+                'slide-in-up': 'slide-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                'fade-in': 'fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
             },
             keyframes: {
                 'slide-in-up': {
-                    '0%': { transform: 'translateY(15px)', opacity: '0' },
+                    '0%': { transform: 'translateY(20px)', opacity: '0' },
                     '100%': { transform: 'translateY(0)', opacity: '1' },
                 },
                 'fade-in': {
                     '0%': { opacity: '0' },
                     '100%': { opacity: '1' },
                 },
-                'glow': {
-                    '0%, 100%': { boxShadow: '0 0 5px rgba(59, 130, 246, 0.5)' },
-                    '50%': { boxShadow: '0 0 20px rgba(59, 130, 246, 0.8)' },
-                },
-                'pulse-subtle': {
-                    '0%, 100%': { opacity: '1' },
-                    '50%': { opacity: '0.7' },
-                },
-                'scale-up-fade-in': {
-                    '0%': { transform: 'scale(0.95)', opacity: '0' },
-                    '100%': { transform: 'scale(1)', opacity: '1' },
-                },
-                'draw': {
-                  'to': { strokeDashoffset: '0' }
-                },
-                'shine': {
-                  '0%': { backgroundPosition: '200% center' },
-                  '100%': { backgroundPosition: '-200% center' }
-                },
-                'subtle-glow': {
-                   '0%, 100%': { textShadow: '0 0 0px rgba(59, 130, 246, 0)' },
-                   '50%': { textShadow: '0 0 10px rgba(59, 130, 246, 0.5)' }
-                },
-                'glow-success': {
-                    '0%, 100%': { boxShadow: '0 0 10px rgba(74, 222, 128, 0.2)' },
-                    '50%': { boxShadow: '0 0 25px rgba(74, 222, 128, 0.5)' },
-                }
             },
           },
         },
@@ -104,25 +93,40 @@
         scroll-behavior: smooth;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        letter-spacing: -0.01em;
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
-      /* Speed: Content Visibility for heavy sections */
-      #services, #reviews {
-        content-visibility: auto;
-        contain-intrinsic-size: 0 500px;
+      
+      .dark body {
+        background-color: #000000;
+        color: #FFFFFF;
       }
-      /* Custom Scrollbar */
+
+      body:not(.dark) {
+        background-color: #FFFFFF;
+        color: #000000;
+      }
+      
+      /* Refined Scrollbar */
       ::-webkit-scrollbar {
-        width: 8px;
+        width: 4px;
       }
       ::-webkit-scrollbar-track {
-        background: #111827;
+        background: transparent;
       }
       ::-webkit-scrollbar-thumb {
-        background: #374151;
-        border-radius: 4px;
+        background: #333333;
+        border-radius: 10px;
       }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #3b82f6;
+      
+      .dark ::selection {
+        background: #007AFF;
+        color: #FFFFFF;
+      }
+      
+      ::selection {
+        background: #007AFF;
+        color: #FFFFFF;
       }
     </style>
   </head>

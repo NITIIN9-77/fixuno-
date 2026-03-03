@@ -1,5 +1,5 @@
 
-import type React from 'react';
+import React from 'react';
 
 export interface SubService {
   id: string;
@@ -13,6 +13,7 @@ export interface Service {
   name: string;
   description: string;
   icon: React.ReactNode;
+  badge?: string;
   subServices: SubService[];
   parts?: SubService[];
 }
@@ -20,11 +21,6 @@ export interface Service {
 export interface CartItem extends SubService {
   quantity: number;
   parentServiceName: string;
-}
-
-export interface ChatMessage {
-  role: 'user' | 'model';
-  text: string;
 }
 
 export interface User {
@@ -39,7 +35,7 @@ export interface Booking {
   date: string;
   items: CartItem[];
   total: number;
-  status: 'Pending' | 'Confirmed' | 'Completed';
+  status: 'Pending' | 'Confirmed' | 'In Progress' | 'Completed' | 'Cancelled';
   userName: string;
   userPhone: string;
   userAddress: string;

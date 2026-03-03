@@ -6,32 +6,36 @@ interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({ onBookNow }) => {
-  // Speed: Optimized image URL with specific width (w=1280) and quality (q=75)
-  const heroImageUrl = "https://images.unsplash.com/photo-1626802393233-04b3be975240?q=75&w=1280&auto=format&fit=crop";
+  const heroImageUrl = "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=75&w=1280&auto=format&fit=crop";
 
   return (
-    <section 
-      className="relative h-[70vh] min-h-[500px] flex items-center justify-center text-center bg-cover bg-center" 
-      style={{ backgroundImage: `url('${heroImageUrl}')` }}
-    >
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
-      <div className="relative z-10 p-4">
-        <h1 className="text-4xl md:text-7xl font-extrabold mb-4 leading-tight tracking-tight bg-gradient-to-r from-white via-primary to-slate-400 bg-clip-text text-transparent bg-[length:200%_auto] animate-fade-in animate-shine uppercase">
-          FIXUNO.
-        </h1>
-        <h2 className="text-2xl md:text-4xl font-bold text-textPrimary mb-6 animate-fade-in [animation-delay:0.15s] opacity-0" style={{ animationFillMode: 'forwards' }}>
-          Your Number One Home Solution.
-        </h2>
-        <p className="text-lg md:text-xl max-w-3xl mx-auto mb-8 text-textSecondary animate-fade-in [animation-delay:0.3s] opacity-0" style={{ animationFillMode: 'forwards' }}>
-          Expert repairs, installation, and maintenance at your doorstep.
-        </p>
-        <button
-          onClick={onBookNow}
-          className="bg-primary text-white font-bold py-3 px-8 rounded-full text-lg transition-transform duration-300 transform hover:scale-105 shadow-lg animate-glow animate-fade-in [animation-delay:0.45s] opacity-0"
-          style={{ animationFillMode: 'forwards' }}
-        >
-          Explore Our Services
-        </button>
+    <section className="relative h-[40vh] md:h-[60vh] min-h-[300px] md:min-h-[500px] flex items-center overflow-hidden bg-background-light dark:bg-background-dark">
+      <div 
+        className="absolute inset-0 bg-cover bg-center opacity-20 dark:opacity-40 grayscale"
+        style={{ backgroundImage: `url('${heroImageUrl}')` }}
+      ></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-background-light dark:from-background-dark via-background-light/80 dark:via-background-dark/80 to-transparent"></div>
+      
+      <div className="container mx-auto px-6 lg:px-12 relative z-10">
+        <div className="max-w-3xl animate-fade-in">
+          <div className="inline-flex items-center space-x-3 mb-4 md:mb-8">
+            <div className="w-8 h-px bg-primary"></div>
+            <span className="text-[10px] font-bold text-primary uppercase tracking-[0.5em]">Premium Standard</span>
+          </div>
+          
+          <h1 className="text-4xl md:text-8xl font-black text-textPrimary-light dark:text-textPrimary-dark tracking-tighter uppercase italic leading-[0.85] mb-6 md:mb-10">
+            Expert Care <br />
+            <span className="text-primary">Redefined.</span>
+          </h1>
+          
+          <p className="text-textSecondary-light dark:text-textSecondary-dark text-xs md:text-lg max-w-md leading-relaxed mb-8 md:mb-12">
+            The definitive solution for high-end home maintenance, delivered by industry-certified specialists.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 md:gap-8">
+            {/* Book Appointment button removed as requested */}
+          </div>
+        </div>
       </div>
     </section>
   );
