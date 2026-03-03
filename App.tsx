@@ -5,14 +5,17 @@ import Hero from './components/Hero';
 import QuickServiceGrid from './components/QuickServiceGrid';
 import Services from './components/Services';
 import Reviews from './components/Reviews';
+import ChatModal from './components/ChatModal';
 import Footer from './components/Footer';
 import ServiceTracker from './components/ServiceTracker';
 import { SERVICES } from './constants';
 import type { Service, CartItem, SubService, User, Booking } from './types';
 
 // Lazy load modals for better initial performance
-const BookingForm = lazy(() => import('./components/BookingForm'));
-const ServiceDetailModal = lazy(() => import('./components/ServiceDetailModal'));
+const BookingForm = lazy(() => import('./components/BookingForm.tsx'));
+const ServiceDetailModal = lazy(() => import('./components/ServiceDetailModal.tsx'));
+const BookingHistoryModal = lazy(() => import('./components/BookingHistoryModal.tsx'));
+const AdminDashboard = lazy(() => import('./components/AdminDashboard.tsx'));
 
 const App: React.FC = () => {
   // Navigation State
@@ -148,7 +151,7 @@ const App: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-background-light dark:bg-background-dark text-textPrimary-light dark:text-textPrimary-dark">
-      <Header onNavigate={navigate} />
+      <Header onOpenHistory={() => setIsHistoryOpen(true)} onNavigate={navigate} />
       
       <main className={`flex-grow animate-fade-in ${currentPath === '/' || currentPath === '' ? 'pt-16' : 'pt-20'}`}>
         {/* Only show Hero on Home Path */}
@@ -210,6 +213,11 @@ const App: React.FC = () => {
       </main>
 
       <Footer 
+        onAdminLogin={() => {
+          const pin = prompt("Enter Partner Admin PIN:");
+          if (pin === "niko143") { setIsAdminDashboardOpen(true); } 
+          else if (pin !== null) { alert("Invalid PIN."); }
+        }} 
         onNavigate={navigate}
       />
 
@@ -233,7 +241,26 @@ const App: React.FC = () => {
             onSuccess={handleBookingSuccess}
           />
         )}
+
+        {isHistoryOpen && (
+          <BookingHistoryModal 
+              bookings={userBookings} 
+              onClose={() => { setIsHistoryOpen(false); navigate('/'); }} 
+              onDelete={handleDeleteBooking}
+          />
+        )}
+
+        {isAdminDashboardOpen && (
+            <AdminDashboard 
+              bookings={globalBookings}
+              onClose={() => setIsAdminDashboardOpen(false)}
+              onUpdateStatus={handleUpdateBookingStatus}
+              onDelete={handleDeleteBooking}
+            />
+        )}
       </Suspense>
+
+      <ChatModal />
     </div>
   );
 };

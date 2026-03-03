@@ -24,8 +24,8 @@ const ServiceTracker: React.FC = () => {
       // 2. Calculate Technicians on Field
       const currentHour = now.getHours();
       
-      // Offline from 11:00 PM (23) to 7:00 AM (7)
-      if (currentHour >= 23 || currentHour < 7) {
+      // Offline from 10:00 PM (22) to 8:00 AM (8)
+      if (currentHour >= 22 || currentHour < 8) {
         setIsOffline(true);
         setActiveTechs(0);
       } else {
@@ -94,7 +94,7 @@ const ServiceTracker: React.FC = () => {
                     )}
                 </span>
                 <span className={`${isOffline ? 'text-textSecondary-light dark:text-textSecondary-dark' : 'text-emerald-500'} text-[9px] font-black uppercase tracking-widest transition-colors`}>
-                    {isOffline ? 'Offline (Resumes 7 AM)' : 'Live Active'}
+                    {isOffline ? 'Offline (Resumes 8 AM)' : 'Live Active'}
                 </span>
             </div>
             

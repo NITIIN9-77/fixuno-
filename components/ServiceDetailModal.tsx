@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import type { Service, SubService, CartItem } from '../types';
+import ExplanationModal from './ExplanationModal';
 
 interface ServiceDetailModalProps {
   service: Service;
@@ -11,6 +12,8 @@ interface ServiceDetailModalProps {
 }
 
 const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({ service, cart, onAddToCart, onUpdateCartQuantity, onClose, onProceed }) => {
+  const [explainingSubService, setExplainingSubService] = useState<SubService | null>(null);
+
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
@@ -28,6 +31,15 @@ const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({ service, cart, 
         <div className="flex-1 pr-4">
           <div className="flex items-center">
             <h4 className="font-bold text-textPrimary-light dark:text-textPrimary-dark uppercase tracking-tight text-sm">{subService.name}</h4>
+            <button 
+              onClick={() => setExplainingSubService(subService)}
+              className="ml-2 text-textSecondary-light dark:text-textSecondary-dark hover:text-primary transition-colors p-1 rounded-full"
+              aria-label={`Learn more about ${subService.name}`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </button>
           </div>
           <p className="text-primary font-black mt-1 text-sm">₹{subService.price}</p>
           {subService.description && (
@@ -78,7 +90,7 @@ const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({ service, cart, 
               <div>
                 <h3 className="text-[10px] font-black text-textSecondary-light dark:text-textSecondary-dark uppercase tracking-[0.3em] mb-6 flex items-center">
                   Related Spare Parts
-                  <div className="flex-grow h-px bg-black/5 dark:border-white/5 ml-4"></div>
+                  <div className="flex-grow h-px bg-black/5 dark:bg-white/5 ml-4"></div>
                 </h3>
                 <div className="space-y-3">
                   {service.parts.map(renderServiceItem)}
@@ -102,6 +114,13 @@ const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({ service, cart, 
           )}
         </div>
       </div>
+      {explainingSubService && (
+        <ExplanationModal
+            serviceName={service.name}
+            subService={explainingSubService}
+            onClose={() => setExplainingSubService(null)}
+        />
+      )}
     </>
   );
 };

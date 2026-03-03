@@ -87,6 +87,13 @@ const Header: React.FC<HeaderProps> = ({ onOpenHistory, onNavigate }) => {
                     {item}
                   </button>
                 ))}
+                <div className="h-4 w-px bg-black/10 dark:bg-white/10 mx-2"></div>
+                <button 
+                  onClick={onOpenHistory}
+                  className="text-[10px] font-bold text-primary hover:text-primary/80 uppercase tracking-[0.2em] transition-colors"
+                >
+                  My Bookings
+                </button>
               </nav>
 
               {/* Mobile Menu Toggle */}
@@ -114,6 +121,12 @@ const Header: React.FC<HeaderProps> = ({ onOpenHistory, onNavigate }) => {
                 {item}
               </button>
             ))}
+            <button 
+              onClick={() => { onOpenHistory?.(); setIsMobileMenuOpen(false); }}
+              className="text-sm font-black text-primary uppercase tracking-widest text-left"
+            >
+              My Bookings
+            </button>
           </div>
         </div>
       </header>

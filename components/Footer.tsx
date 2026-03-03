@@ -81,6 +81,12 @@ const Footer: React.FC<FooterProps> = ({ onAdminLogin, onNavigate }) => {
           <p className="text-[10px] text-textSecondary-light dark:text-textSecondary-dark uppercase tracking-widest">
             &copy; {new Date().getFullYear()} Fixuno. All Rights Reserved.
           </p>
+          <button 
+            onClick={onAdminLogin}
+            className="text-[10px] text-textSecondary-light dark:text-textSecondary-dark hover:text-primary uppercase tracking-widest transition-colors"
+          >
+            Partner Access
+          </button>
         </div>
       </div>
     </footer>
