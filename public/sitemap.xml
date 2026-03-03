@@ -32,8 +32,13 @@
   </url>
 
   <url>
-    <loc>https://www.fixuno.in/follow-us</loc>
-    <priority>0.6</priority>
+    <loc>https://www.fixuno.in/reviews</loc>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.fixuno.in/live-status</loc>
+    <priority>0.7</priority>
   </url>
 
 </urlset>

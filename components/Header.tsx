@@ -78,10 +78,10 @@ const Header: React.FC<HeaderProps> = ({ onOpenHistory, onNavigate }) => {
 
               {/* Desktop Nav */}
               <nav className="hidden lg:flex items-center space-x-8">
-                {['Services', 'Reviews', 'Contact'].map((item) => (
+                {['Service', 'Reviews', 'Live Status', 'Contact Us'].map((item) => (
                   <button 
                     key={item}
-                    onClick={() => handleNavClick(`/${item.toLowerCase()}`)}
+                    onClick={() => handleNavClick(`/${item.toLowerCase().replace(' ', '-')}`)}
                     className="text-[10px] font-bold text-textSecondary-light dark:text-textSecondary-dark hover:text-textPrimary-light dark:hover:text-textPrimary-dark uppercase tracking-[0.2em] transition-colors"
                   >
                     {item}
@@ -110,12 +110,12 @@ const Header: React.FC<HeaderProps> = ({ onOpenHistory, onNavigate }) => {
         </div>
 
         {/* Compact Mobile Menu Dropdown */}
-        <div className={`absolute top-full left-0 right-0 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-xl border-b border-black/5 dark:border-white/5 lg:hidden transition-all duration-300 overflow-hidden ${isMobileMenuOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'}`}>
+        <div className={`absolute top-full left-0 right-0 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-xl border-b border-black/5 dark:border-white/5 lg:hidden transition-all duration-300 overflow-hidden ${isMobileMenuOpen ? 'max-h-72 opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="container mx-auto px-6 py-6 flex flex-col space-y-4">
-            {['Services', 'Reviews', 'Contact'].map((item) => (
+            {['Service', 'Reviews', 'Live Status', 'Contact Us'].map((item) => (
               <button 
                 key={item}
-                onClick={() => handleNavClick(`/${item.toLowerCase()}`)}
+                onClick={() => handleNavClick(`/${item.toLowerCase().replace(' ', '-')}`)}
                 className="text-sm font-black text-textPrimary-light dark:text-textPrimary-dark uppercase tracking-widest text-left hover:text-primary transition-colors"
               >
                 {item}

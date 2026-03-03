@@ -49,7 +49,7 @@ const Footer: React.FC<FooterProps> = ({ onAdminLogin, onNavigate }) => {
           <div className="lg:col-span-3">
             <h4 className="text-[10px] font-bold text-textPrimary-light dark:text-textPrimary-dark uppercase tracking-[0.4em] mb-8">Navigation</h4>
             <ul className="space-y-4">
-              {['Services', 'Reviews', 'Contact Us'].map((item) => (
+              {['Services', 'Reviews', 'Live Status', 'Contact Us'].map((item) => (
                 <li key={item}>
                   <button 
                     onClick={() => onNavigate(`/${item.toLowerCase().replace(' ', '-')}`)}

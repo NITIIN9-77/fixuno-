@@ -6,9 +6,10 @@ import type { Service } from '../types';
 
 interface ServicesProps {
   onViewDetails: (service: Service) => void;
+  onCustomClick?: () => void;
 }
 
-const Services: React.FC<ServicesProps> = ({ onViewDetails }) => {
+const Services: React.FC<ServicesProps> = ({ onViewDetails, onCustomClick }) => {
   return (
     <section id="services" className="py-20 bg-background-light dark:bg-background-dark scroll-mt-20">
       <div className="container mx-auto px-6 lg:px-12">
@@ -44,10 +45,7 @@ const Services: React.FC<ServicesProps> = ({ onViewDetails }) => {
               <p className="text-textSecondary-light dark:text-textSecondary-dark text-sm mb-8 leading-relaxed">Don't see what you need? We handle all kinds of bespoke home repairs and installations.</p>
               <div className="mt-auto w-full space-y-4">
                   <button
-                      onClick={() => {
-                          const chatBtn = document.querySelector('[aria-label="Drag to move, click to chat"]') as HTMLElement;
-                          if (chatBtn) chatBtn.click();
-                      }}
+                      onClick={() => onCustomClick?.()}
                       className="w-full bg-black/5 dark:bg-white/5 text-textPrimary-light dark:text-textPrimary-dark font-bold py-4 px-8 rounded-full transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/10 border border-black/10 dark:border-white/10 uppercase tracking-widest text-[10px]"
                   >
                       Chat With Uno

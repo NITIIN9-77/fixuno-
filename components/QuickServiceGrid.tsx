@@ -5,9 +5,10 @@ import type { Service } from '../types';
 
 interface QuickServiceGridProps {
   onServiceClick: (service: Service) => void;
+  onCustomClick?: () => void;
 }
 
-const QuickServiceGrid: React.FC<QuickServiceGridProps> = ({ onServiceClick }) => {
+const QuickServiceGrid: React.FC<QuickServiceGridProps> = ({ onServiceClick, onCustomClick }) => {
   return (
     <section className="bg-background-light dark:bg-background-dark border-b border-black/5 dark:border-white/5 pt-4 pb-8">
       <div className="container mx-auto px-4">
@@ -40,10 +41,7 @@ const QuickServiceGrid: React.FC<QuickServiceGridProps> = ({ onServiceClick }) =
             
             {/* Custom Need Tile */}
             <button
-              onClick={() => {
-                // Since chat is removed, we might want to navigate to contact or show a simple alert
-                onServiceClick(SERVICES[0]); // Fallback or handle differently
-              }}
+              onClick={() => onCustomClick?.()}
               className="group flex flex-col items-center p-2 md:p-3 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-300"
             >
               <div className="mb-1.5 p-2.5 md:p-3 rounded-xl bg-black/[0.02] dark:bg-white/[0.02] group-hover:bg-primary/10 transition-colors border border-black/5 dark:border-white/5">

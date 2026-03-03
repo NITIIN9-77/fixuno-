@@ -26,6 +26,7 @@ const App: React.FC = () => {
   const [isBookingFormOpen, setIsBookingFormOpen] = useState<boolean>(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
   const [isAdminDashboardOpen, setIsAdminDashboardOpen] = useState<boolean>(false);
+  const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
   
   // Data states
   const [selectedService, setSelectedService] = useState<Service | null>(null);
@@ -148,36 +149,48 @@ const App: React.FC = () => {
   // Check if we are in a "Dedicated View"
   const isContactView = currentPath.includes('contact-us');
   const isServiceView = currentPath.includes('service');
+  const isReviewsView = currentPath.includes('reviews');
+  const isTechniciansView = currentPath.includes('technicians') || currentPath.includes('live-status');
+  const isServiceDeepLink = currentPath.includes('ac-repair') || 
+                            currentPath.includes('minor-home-repairs') || 
+                            currentPath.includes('large-appliance-repair');
+  const isHome = currentPath === '/' || currentPath === '' || isServiceDeepLink;
 
   return (
     <div className="flex flex-col min-h-screen bg-background-light dark:bg-background-dark text-textPrimary-light dark:text-textPrimary-dark">
       <Header onOpenHistory={() => setIsHistoryOpen(true)} onNavigate={navigate} />
       
-      <main className={`flex-grow animate-fade-in ${currentPath === '/' || currentPath === '' ? 'pt-16' : 'pt-20'}`}>
+      <main className={`flex-grow animate-fade-in ${isHome ? 'pt-16' : 'pt-20'}`}>
         {/* Only show Hero on Home Path */}
-        {(currentPath === '/' || currentPath === '') && !isContactView && !isServiceView && (
+        {isHome && !isContactView && !isServiceView && !isReviewsView && !isTechniciansView && (
           <div className="flex flex-col">
-            <QuickServiceGrid onServiceClick={(s) => {
+            <QuickServiceGrid 
+              onServiceClick={(s) => {
                 setSelectedService(s); 
                 setIsServiceDetailOpen(true); 
                 if(s.id === 'ac') navigate('/ac-repair');
                 else if(s.id === 'minor_work') navigate('/minor-home-repairs');
                 else if(s.id === 'large-appliance') navigate('/large-appliance-repair');
-            }} />
+              }} 
+              onCustomClick={() => setIsChatOpen(true)}
+            />
             <Hero onBookNow={() => navigate('/service')} />
           </div>
         )}
 
-        {/* Services Section */}
-        <div className={isContactView ? 'hidden' : ''}>
-           <Services onViewDetails={(s) => { 
+        {/* Services Section - Show on Home or Service View */}
+        {(isHome || isServiceView) && !isContactView && !isReviewsView && !isTechniciansView && (
+           <Services 
+             onViewDetails={(s) => { 
                 setSelectedService(s); 
                 setIsServiceDetailOpen(true); 
                 if(s.id === 'ac') navigate('/ac-repair');
                 else if(s.id === 'minor_work') navigate('/minor-home-repairs');
                 else if(s.id === 'large-appliance') navigate('/large-appliance-repair');
-            }} />
-        </div>
+             }} 
+             onCustomClick={() => setIsChatOpen(true)}
+           />
+        )}
 
         {/* Contact Us Dedicated View */}
         {isContactView && (
@@ -205,11 +218,43 @@ const App: React.FC = () => {
             </div>
         )}
 
-        {/* Reviews - Show on Home or Service View */}
-        {!isContactView && <Reviews />}
+        {/* Reviews Dedicated View */}
+        {isReviewsView && (
+            <div className="py-10">
+                <div className="container mx-auto px-4 mb-10 text-center">
+                    <h1 className="text-4xl md:text-6xl font-black text-textPrimary-light dark:text-textPrimary-dark uppercase tracking-tighter">Customer Reviews</h1>
+                    <p className="text-textSecondary-light dark:text-textSecondary-dark mt-4 uppercase tracking-widest text-[10px] font-bold">What our premium clients say about us</p>
+                </div>
+                <Reviews />
+                <div className="container mx-auto px-4 mt-12 text-center">
+                    <button 
+                        onClick={() => navigate('/')}
+                        className="bg-primary text-white font-black px-10 py-3 rounded-full hover:scale-105 active:scale-95 transition-all uppercase tracking-widest text-[10px]"
+                    >
+                        Back to Home
+                    </button>
+                </div>
+            </div>
+        )}
 
-        {/* Dynamic Service Tracker */}
-        {!isContactView && <ServiceTracker />}
+        {/* Technicians / Live Status Dedicated View */}
+        {isTechniciansView && (
+            <div className="py-10">
+                <div className="container mx-auto px-4 mb-10 text-center">
+                    <h1 className="text-4xl md:text-6xl font-black text-textPrimary-light dark:text-textPrimary-dark uppercase tracking-tighter">Live Status</h1>
+                    <p className="text-textSecondary-light dark:text-textSecondary-dark mt-4 uppercase tracking-widest text-[10px] font-bold">Real-time tracking of our field operations</p>
+                </div>
+                <ServiceTracker />
+                <div className="container mx-auto px-4 mt-12 text-center">
+                    <button 
+                        onClick={() => navigate('/')}
+                        className="bg-primary text-white font-black px-10 py-3 rounded-full hover:scale-105 active:scale-95 transition-all uppercase tracking-widest text-[10px]"
+                    >
+                        Back to Home
+                    </button>
+                </div>
+            </div>
+        )}
       </main>
 
       <Footer 
@@ -260,7 +305,11 @@ const App: React.FC = () => {
         )}
       </Suspense>
 
-      <ChatModal />
+      <ChatModal 
+        isOpen={isChatOpen} 
+        onClose={() => setIsChatOpen(false)} 
+        onOpen={() => setIsChatOpen(true)} 
+      />
     </div>
   );
 };
