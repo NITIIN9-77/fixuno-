@@ -2,10 +2,9 @@
 import React from 'react';
 
 interface HeroProps {
-    onBookNow: () => void;
 }
 
-const Hero: React.FC<HeroProps> = ({ onBookNow }) => {
+const Hero: React.FC<HeroProps> = () => {
   const heroImageUrl = "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=75&w=1280&auto=format&fit=crop";
 
   return (

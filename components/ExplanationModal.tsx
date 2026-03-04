@@ -37,8 +37,8 @@ const ExplanationModal: React.FC<ExplanationModalProps> = ({ serviceName, subSer
   }, [serviceName, subService]);
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-[60] animate-fade-in" onClick={onClose}>
-      <div className="bg-slate-800 rounded-lg shadow-2xl w-full max-w-md m-4 relative animate-slide-in-up" onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 bg-black/95 backdrop-blur-xl flex items-center justify-center z-[60] animate-fade-in" onClick={onClose}>
+      <div className="bg-slate-900 rounded-lg shadow-2xl w-full max-w-md m-4 relative animate-slide-in-up border border-slate-700" onClick={(e) => e.stopPropagation()}>
         <header className="p-4 border-b border-slate-700 flex justify-between items-center">
           <h3 className="text-lg font-bold text-primary">
             Techie Explains: <span className="text-textPrimary">{subService.name}</span>

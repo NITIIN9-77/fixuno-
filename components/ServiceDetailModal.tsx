@@ -63,10 +63,10 @@ const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({ service, cart, 
 
   return (
     <>
-      <div className="fixed inset-0 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md flex items-center justify-center z-50 animate-fade-in" onClick={onClose}>
-        <div className="bg-background-light dark:bg-background-dark rounded-3xl shadow-2xl w-full max-w-2xl m-4 relative animate-slide-in-up flex flex-col max-h-[90vh] border border-black/5 dark:border-white/5" onClick={(e) => e.stopPropagation()}>
+      <div className="fixed inset-0 bg-black/95 backdrop-blur-xl flex items-center justify-center z-50 animate-fade-in" onClick={onClose}>
+        <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-2xl m-4 relative animate-slide-in-up flex flex-col max-h-[90vh] border border-black/5 dark:border-white/5" onClick={(e) => e.stopPropagation()}>
           
-          <header className="p-6 border-b border-black/5 dark:border-white/5 flex justify-between items-center flex-shrink-0">
+          <header className="p-6 border-b border-black/5 dark:border-white/5 flex justify-between items-center flex-shrink-0 bg-white dark:bg-slate-900 rounded-t-3xl">
               <h2 className="text-xl font-black text-textPrimary-light dark:text-textPrimary-dark uppercase tracking-widest italic">{service.name}</h2>
               <button onClick={onClose} aria-label="Close" className="text-textSecondary-light dark:text-textSecondary-dark hover:text-primary transition-colors">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -100,7 +100,7 @@ const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({ service, cart, 
           </div>
 
           {totalItems > 0 && (
-            <footer className="p-6 border-t border-black/5 dark:border-white/5 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md rounded-b-3xl flex-shrink-0">
+            <footer className="p-6 border-t border-black/5 dark:border-white/5 bg-white dark:bg-slate-900 rounded-b-3xl flex-shrink-0">
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-[10px] font-bold text-textSecondary-light dark:text-textSecondary-dark uppercase tracking-widest mb-1">{totalItems} {totalItems > 1 ? 'Items' : 'Item'}</p>

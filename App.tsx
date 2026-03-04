@@ -174,7 +174,7 @@ const App: React.FC = () => {
               }} 
               onCustomClick={() => setIsChatOpen(true)}
             />
-            <Hero onBookNow={() => navigate('/service')} />
+            <Hero />
           </div>
         )}
 

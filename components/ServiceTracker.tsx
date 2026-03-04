@@ -30,9 +30,9 @@ const ServiceTracker: React.FC = () => {
         setActiveTechs(0);
       } else {
         setIsOffline(false);
-        // Create a pseudo-random number based on time that changes every 5 minutes.
+        // Create a pseudo-random number based on time that changes every minute.
         // This ensures the number fluctuates between 80 and 90, but is the SAME for everyone.
-        const timeSeed = Math.floor(now.getTime() / (1000 * 60 * 5));
+        const timeSeed = Math.floor(now.getTime() / (1000 * 60));
         const pseudoRandom = Math.abs(Math.sin(timeSeed)); // Returns a value between 0 and 1
         
         // Scale to 80-90 range

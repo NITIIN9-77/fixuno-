@@ -18,7 +18,7 @@ const Services: React.FC<ServicesProps> = ({ onViewDetails, onCustomClick }) => 
             <div className="max-w-2xl">
               <h2 className="text-3xl md:text-6xl font-black text-textPrimary-light dark:text-textPrimary-dark tracking-tighter uppercase italic leading-none mb-6">
                 Full Service <br />
-                <span className="text-primary">Inventory.</span>
+                <span className="text-primary">Solutions.</span>
               </h2>
               <p className="text-textSecondary-light dark:text-textSecondary-dark text-sm md:text-base leading-relaxed">
                 Our comprehensive suite of home maintenance solutions, delivered by industry-certified specialists.
@@ -35,11 +35,6 @@ const Services: React.FC<ServicesProps> = ({ onViewDetails, onCustomClick }) => 
             
             {/* Custom Service Card */}
             <div className="bg-background-light dark:bg-background-dark p-8 md:p-10 flex flex-col items-start transition-all duration-500 group border-t md:border-t-0 border-black/5 dark:border-white/5">
-              <div className="mb-8 bg-black/5 dark:bg-white/5 p-4 rounded-2xl group-hover:bg-primary/10 transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-textSecondary-light dark:text-textSecondary-dark group-hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-              </div>
               <h3 className="text-xl font-black text-textPrimary-light dark:text-textPrimary-dark uppercase tracking-widest mb-4">Custom Need?</h3>
               <p className="text-textSecondary-light dark:text-textSecondary-dark text-sm mb-8 leading-relaxed">Don't see what you need? We handle all kinds of bespoke home repairs and installations.</p>
               <div className="mt-auto w-full space-y-4">

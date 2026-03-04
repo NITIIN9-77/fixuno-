@@ -12,7 +12,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, onViewDetails }) => 
     <div className="flex flex-col items-start h-full">
       <div className="mb-8 bg-black/5 dark:bg-white/5 p-4 rounded-2xl group-hover:bg-primary/10 transition-colors duration-500">
         {React.cloneElement(service.icon as React.ReactElement, { 
-          className: "w-8 h-8 text-textSecondary-light dark:text-textSecondary-dark group-hover:text-primary transition-colors duration-500" 
+          className: `${(service.icon as React.ReactElement).props.className} w-8 h-8 transition-colors duration-500` 
         })}
       </div>
       

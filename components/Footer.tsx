@@ -33,13 +33,17 @@ const Footer: React.FC<FooterProps> = ({ onAdminLogin, onNavigate }) => {
       <div className="container mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
           <div className="lg:col-span-5">
-            <h3 className="text-2xl font-black text-textPrimary-light dark:text-textPrimary-dark tracking-tighter uppercase italic mb-8">FIXUNO<span className="text-primary">.</span></h3>
+            <h3 className="text-2xl font-black text-blue-600 tracking-tighter uppercase italic mb-8">FIXUNO<span className="text-primary">.</span></h3>
             <p className="text-textSecondary-light dark:text-textSecondary-dark text-sm leading-relaxed max-w-sm mb-12">
               The definitive standard for premium home maintenance. Delivering excellence through certified expertise and meticulous attention to detail.
             </p>
             <div className="flex space-x-6">
-              {[InstagramIcon, FacebookIcon, YouTubeIcon].map((Icon, i) => (
-                <a key={i} href="#" className="text-textSecondary-light dark:text-textSecondary-dark hover:text-primary transition-colors">
+              {[
+                { Icon: InstagramIcon, color: 'text-pink-500' },
+                { Icon: FacebookIcon, color: 'text-blue-600' },
+                { Icon: YouTubeIcon, color: 'text-red-600' }
+              ].map(({ Icon, color }, i) => (
+                <a key={i} href="#" className={`${color} hover:opacity-80 transition-opacity`}>
                   <Icon className="w-5 h-5" />
                 </a>
               ))}

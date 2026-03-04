@@ -118,7 +118,7 @@ export const SERVICES: Service[] = [
     id: 'ac',
     name: 'AC Service & Repair',
     description: 'Expert installation, repair, and maintenance for all types of air conditioners.',
-    icon: <AirConditionerIcon className="w-12 h-12 text-primary" />,
+    icon: <AirConditionerIcon className="w-12 h-12 text-blue-600" />,
     badge: 'Sale',
     subServices: [
       { id: 'ac-s-jet', name: 'Split AC Jet Service', price: 599, description: 'Deep cleaning of indoor & outdoor units with a high-pressure water jet for improved cooling and air quality.' },
@@ -140,7 +140,7 @@ export const SERVICES: Service[] = [
     id: 'lighting',
     name: 'Lighting & Fixtures',
     description: 'Installation and repair of tube lights, bulb holders, and decorative lighting.',
-    icon: <LightBulbIcon className="w-12 h-12 text-primary" />,
+    icon: <LightBulbIcon className="w-12 h-12 text-amber-500" />,
     subServices: [
         { id: 'light-tube-install', name: 'Tube Light Installation', price: 149, description: 'Professional installation of LED or regular tube lights in any room.' },
         { id: 'light-holder-repair', name: 'Bulb Holder Install/Repair', price: 99, description: 'Quick fixing or replacement of faulty bulb holders and sockets.' },
@@ -157,7 +157,7 @@ export const SERVICES: Service[] = [
     id: 'fan',
     name: 'Fan Repair & Installation',
     description: 'Ceiling and exhaust fan installation, repair, and servicing for optimal performance.',
-    icon: <FanIcon className="w-12 h-12 text-primary" />,
+    icon: <FanIcon className="w-12 h-12 text-teal-500" />,
     subServices: [
         { id: 'fan-c-install', name: 'Ceiling Fan Installation', price: 199, description: 'Proper and safe installation of your new ceiling fan, ensuring balanced and quiet operation.' },
         { id: 'fan-e-install', name: 'Exhaust Fan Installation', price: 299, description: 'Installation of an exhaust fan in your kitchen or bathroom for better ventilation.' },
@@ -173,7 +173,7 @@ export const SERVICES: Service[] = [
     id: 'cooler',
     name: 'Cooler Service & Repair',
     description: 'Keep cool with our expert cooler servicing, motor repairs, and pad replacements.',
-    icon: <CoolerIcon className="w-12 h-12 text-primary" />,
+    icon: <CoolerIcon className="w-12 h-12 text-sky-500" />,
     subServices: [
         { id: 'cooler-service', name: 'Cooler General Service', price: 399, description: 'Complete cleaning of the cooler, water tank, and cooling pads for fresh, cool air.' },
         { id: 'cooler-motor-repair', name: 'Motor Repair (Inspection)', price: 299, description: 'Inspection and repair of cooler fan motor issues.' },
@@ -188,7 +188,7 @@ export const SERVICES: Service[] = [
     id: 'large-appliance',
     name: 'Large Appliance Repair',
     description: 'Fixing all major home appliances including refrigerators and washing machines.',
-    icon: <ApplianceRepairIcon className="w-12 h-12 text-primary" />,
+    icon: <ApplianceRepairIcon className="w-12 h-12 text-orange-600" />,
     subServices: [
         { id: 'app-fridge', name: 'Refrigerator Repair (Inspection)', price: 299, description: 'Our technician will visit and diagnose the problem. Fee is adjusted in the final bill.' },
         { id: 'app-fridge-gas', name: 'Refrigerator Gas Charging', price: 2199, description: 'Refilling refrigerant gas in your fridge to solve cooling problems. Includes leak detection.' },
@@ -204,7 +204,7 @@ export const SERVICES: Service[] = [
     id: 'geyser_heater',
     name: 'Geyser & Heater Repair',
     description: 'Solutions for hot water geysers and room heaters, from installation to repairs.',
-    icon: <GeyserHeaterIcon className="w-12 h-12 text-primary" />,
+    icon: <GeyserHeaterIcon className="w-12 h-12 text-red-600" />,
     subServices: [
         { id: 'app-geyser-install', name: 'Geyser Installation', price: 449, description: 'Safe and secure wall-mounting and connection of your new water geyser.' },
         { id: 'app-geyser-repair', name: 'Geyser Repair (Inspection)', price: 249, description: 'Inspection charge to find the fault with your geyser, such as no heating.' },
@@ -218,7 +218,7 @@ export const SERVICES: Service[] = [
     id: 'water_purifier',
     name: 'Water Purifier Service',
     description: 'Ensure safe drinking water with RO/UV purifier installation, servicing, and repairs.',
-    icon: <WaterPurifierIcon className="w-12 h-12 text-primary" />,
+    icon: <WaterPurifierIcon className="w-12 h-12 text-blue-500" />,
     badge: 'Popular',
     subServices: [
         { id: 'ro-service', name: 'Complete RO Service', price: 599, description: 'Full service including cleaning of all filters, pipes, and the storage tank for pure water.' },
@@ -235,7 +235,7 @@ export const SERVICES: Service[] = [
     id: 'microwave',
     name: 'Microwave Repair',
     description: 'Quick and reliable repairs for microwave ovens, from heating issues to panel problems.',
-    icon: <MicrowaveIcon className="w-12 h-12 text-primary" />,
+    icon: <MicrowaveIcon className="w-12 h-12 text-purple-600" />,
     subServices: [
         { id: 'microwave-inspect', name: 'Microwave Repair (Inspection)', price: 299, description: 'A visit charge to diagnose the problem with your microwave oven.' },
         { id: 'microwave-noheat', name: 'Not Heating Repair', price: 799, description: 'Repairing the magnetron or other parts to fix the issue of food not heating.' },
@@ -249,7 +249,7 @@ export const SERVICES: Service[] = [
     id: 'wiring',
     name: 'Home Wiring Solutions',
     description: 'Complete home wiring, re-wiring, and fault detection by certified electricians.',
-    icon: <WiringIcon className="w-12 h-12 text-primary" />,
+    icon: <WiringIcon className="w-12 h-12 text-yellow-600" />,
     subServices: [
         { id: 'wiring-point', name: 'New Wiring Point (per point)', price: 299, description: 'Creating a new electrical point for a light, fan, or socket, including basic wiring.' },
         { id: 'wiring-fault', name: 'Fault Detection & Repair', price: 300, description: 'Identifying and fixing issues like short circuits or power failures in your home wiring.' },
@@ -260,13 +260,13 @@ export const SERVICES: Service[] = [
     id: 'board',
     name: 'Switchboard Installation',
     description: 'Safe and secure installation and upgrade of main switchboards and circuit breakers.',
-    icon: <BoardIcon className="w-12 h-12 text-primary" />,
+    icon: <BoardIcon className="w-12 h-12 text-indigo-600" />,
     subServices: [
         { id: 'board-install', name: 'New Switchboard Installation', price: 699, description: 'Installation of a brand new switchboard with switches and sockets.' },
     ],
     parts: [
-        { id: 'part-board-switch', name: 'Switch Replacement (per piece)', price: 99, description: 'Replacement of a single broken or faulty switch on an existing board.' },
-        { id: 'part-board-socket', name: 'Socket Replacement (per piece)', price: 129, description: 'Replacement of a single broken or faulty socket on an existing board.' },
+        { id: 'part-board-switch', name: 'Switch replacement (per piece)', price: 99, description: 'Replacement of a single broken or faulty switch on an existing board.' },
+        { id: 'part-board-socket', name: 'Socket replacement (per piece)', price: 129, description: 'Replacement of a single broken or faulty socket on an existing board.' },
         { id: 'part-board-mcb', name: 'MCB Replacement', price: 199, description: 'Replacing a faulty or tripped Miniature Circuit Breaker (MCB) in your distribution box.' },
         { id: 'part-board-fuse', name: 'Fuse Replacement', price: 149, description: 'Replacing a blown fuse to restore power to a circuit.' },
     ]
@@ -275,7 +275,7 @@ export const SERVICES: Service[] = [
     id: 'plumbing',
     name: 'Plumbing Services',
     description: 'Comprehensive plumbing solutions from leaky faucets to major pipe installations.',
-    icon: <PlumbingIcon className="w-12 h-12 text-primary" />,
+    icon: <PlumbingIcon className="w-12 h-12 text-emerald-600" />,
     subServices: [
         { id: 'plumb-leak', name: 'Minor Leakage Repair', price: 349, description: 'Fixing minor water leakages from pipes, taps, or joints to prevent water wastage.' },
         { id: 'plumb-tank', name: 'Water Tank Cleaning', price: 599, description: 'Professional 5-step cleaning of your overhead water storage tank for clean water supply.' },
@@ -289,7 +289,7 @@ export const SERVICES: Service[] = [
     id: 'water_pump',
     name: 'Water Pump Services',
     description: 'Installation and repair for submersible, monoblock, and other domestic water pumps.',
-    icon: <WaterPumpIcon className="w-12 h-12 text-primary" />,
+    icon: <WaterPumpIcon className="w-12 h-12 text-blue-700" />,
     subServices: [
         { id: 'pump-sub-install', name: 'Submersible Pump Installation', price: 1299, description: 'Professional installation of submersible pumps for borewells or underground tanks.' },
         { id: 'pump-mono-install', name: 'Monoblock Pump Installation', price: 599, description: 'Setup and installation of surface monoblock pumps for boosting water pressure.' },
@@ -297,14 +297,14 @@ export const SERVICES: Service[] = [
         { id: 'pump-un-install', name: 'Pump Uninstallation/Removal', price: 499, description: 'Safe removal and disconnection of existing submersible or monoblock pumps.' },
     ],
     parts: [
-       { id: 'part-pump-starter-repair', name: 'Starter/Panel Repair', price: 499, description: 'Fixing issues with the electrical starter, capacitor, or control panel for your pump.' },
+        { id: 'part-pump-starter-repair', name: 'Starter/Panel Repair', price: 499, description: 'Fixing issues with the electrical starter, capacitor, or control panel for your pump.' },
     ]
   },
   {
     id: 'television',
     name: 'Television Repair',
     description: 'Expert repairs for all TV types including LED, LCD, and Smart TVs. Installation services also available.',
-    icon: <TelevisionIcon className="w-12 h-12 text-primary" />,
+    icon: <TelevisionIcon className="w-12 h-12 text-violet-600" />,
     subServices: [
         { id: 'tv-install', name: 'TV Wall Mount Installation', price: 499, description: 'Securely mount your TV on the wall for the best viewing experience. Bracket not included.' },
         { id: 'tv-inspect', name: 'TV Repair (Inspection)', price: 299, description: 'A visit charge to diagnose display, sound, or power issues with your television.' },
@@ -316,7 +316,7 @@ export const SERVICES: Service[] = [
     id: 'iron',
     name: 'Iron Repair',
     description: 'Quick and efficient repair services for both steam and dry irons.',
-    icon: <IronIcon className="w-12 h-12 text-primary" />,
+    icon: <IronIcon className="w-12 h-12 text-rose-600" />,
     subServices: [
         { id: 'iron-inspect', name: 'Iron Repair (Inspection)', price: 149, description: 'A small fee to diagnose the problem with your clothes iron.' },
         { id: 'iron-no-heat', name: 'Not Heating Repair', price: 299, description: 'Repair or replacement of the heating element or thermostat to fix heating issues.' },
@@ -329,7 +329,7 @@ export const SERVICES: Service[] = [
     id: 'air_purifier',
     name: 'Air Purifier Service',
     description: 'Maintain clean air in your home with our professional air purifier services.',
-    icon: <AirPurifierIcon className="w-12 h-12 text-primary" />,
+    icon: <AirPurifierIcon className="w-12 h-12 text-emerald-500" />,
     subServices: [
         { id: 'ap-service', name: 'General Service & Cleaning', price: 399, description: 'Complete cleaning of the unit and pre-filters to ensure optimal performance.' },
         { id: 'ap-inspect', name: 'Air Purifier Repair (Inspection)', price: 249, description: 'Diagnosing issues like unusual noise, low airflow, or power problems.' },
@@ -342,7 +342,7 @@ export const SERVICES: Service[] = [
     id: 'blender_mixer',
     name: 'Blender & Mixer Repair',
     description: 'Expert repair for mixer grinders, blenders, and juicers to get your kitchen running again.',
-    icon: <BlenderIcon className="w-12 h-12 text-primary" />,
+    icon: <BlenderIcon className="w-12 h-12 text-pink-600" />,
     subServices: [
         { id: 'mixer-inspect', name: 'Mixer/Blender Repair (Inspection)', price: 199, description: 'A visit to diagnose the issue with your mixer, grinder, or blender.' },
         { id: 'mixer-motor', name: 'Motor Repair / Carbon Change', price: 499, description: 'Addressing issues with the motor, such as sparks, smoke, or complete failure.' },
@@ -356,7 +356,7 @@ export const SERVICES: Service[] = [
     id: 'minor_work',
     name: 'Minor Home Repairs',
     description: 'Quick fixes for all the small but important jobs around your house. Get a handyman at your doorstep.',
-    icon: <HandymanIcon className="w-12 h-12 text-primary" />,
+    icon: <HandymanIcon className="w-12 h-12 text-blue-500" />,
     subServices: [
         { id: 'mw-drilling', name: 'Drill & Hang (per item)', price: 99, description: 'Professional drilling and hanging for photo frames, clocks, mirrors, etc.' },
         { id: 'mw-hinge', name: 'Door Hinge/Handle Repair', price: 149, description: 'Fixing loose hinges, handles, or latches on doors and cabinets.' },

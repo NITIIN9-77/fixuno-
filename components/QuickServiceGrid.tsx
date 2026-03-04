@@ -29,7 +29,7 @@ const QuickServiceGrid: React.FC<QuickServiceGridProps> = ({ onServiceClick, onC
               >
                 <div className="mb-1.5 p-2.5 md:p-3 rounded-xl bg-black/[0.02] dark:bg-white/[0.02] group-hover:bg-primary/10 transition-colors border border-black/5 dark:border-white/5">
                   {React.cloneElement(service.icon as React.ReactElement, { 
-                    className: "w-5 h-5 md:w-6 md:h-6 text-textSecondary-light dark:text-textSecondary-dark group-hover:text-primary transition-colors" 
+                    className: `${(service.icon as React.ReactElement).props.className} w-5 h-5 md:w-6 md:h-6` 
                   })}
                 </div>
                 
@@ -45,8 +45,8 @@ const QuickServiceGrid: React.FC<QuickServiceGridProps> = ({ onServiceClick, onC
               className="group flex flex-col items-center p-2 md:p-3 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-300"
             >
               <div className="mb-1.5 p-2.5 md:p-3 rounded-xl bg-black/[0.02] dark:bg-white/[0.02] group-hover:bg-primary/10 transition-colors border border-black/5 dark:border-white/5">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 md:w-6 md:h-6 text-textSecondary-light dark:text-textSecondary-dark group-hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 md:w-6 md:h-6 text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                 </svg>
               </div>
               <p className="text-[8px] md:text-[9px] font-black text-textPrimary-light dark:text-textPrimary-dark uppercase tracking-widest text-center opacity-80 group-hover:opacity-100">

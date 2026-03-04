@@ -55,7 +55,7 @@ const Header: React.FC<HeaderProps> = ({ onOpenHistory, onNavigate }) => {
             
             {/* Logo */}
             <button onClick={() => handleNavClick('/')} className="flex items-center group">
-              <span className="text-lg md:text-xl font-black text-textPrimary-light dark:text-textPrimary-dark tracking-tighter uppercase italic">FIXUNO<span className="text-primary">.</span></span>
+              <span className="text-lg md:text-xl font-black text-blue-600 tracking-tighter uppercase italic">FIXUNO<span className="text-primary">.</span></span>
             </button>
 
             <div className="flex items-center space-x-2 md:space-x-6">

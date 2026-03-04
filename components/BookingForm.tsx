@@ -125,8 +125,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ cart, userProfile, onClose, o
 
   if (submissionStatus === 'success') {
       return (
-          <div className="fixed inset-0 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md flex items-center justify-center z-50 animate-fade-in">
-              <div className="bg-background-light dark:bg-background-dark rounded-3xl shadow-2xl p-10 text-center animate-scale-up-fade-in animate-glow-success border border-black/5 dark:border-white/5 max-w-md mx-4">
+          <div className="fixed inset-0 bg-black/95 backdrop-blur-xl flex items-center justify-center z-50 animate-fade-in">
+              <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl p-10 text-center animate-scale-up-fade-in animate-glow-success border border-black/5 dark:border-white/5 max-w-md mx-4">
                   <div className="mb-6 text-emerald-500">
                     <svg className="h-20 w-20 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -141,8 +141,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ cart, userProfile, onClose, o
   }
 
   return (
-    <div className="fixed inset-0 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md flex items-center justify-center z-50 animate-fade-in" onClick={onClose}>
-      <div className="bg-background-light dark:bg-background-dark rounded-3xl shadow-2xl p-8 w-full max-w-lg m-4 relative animate-slide-in-up overflow-y-auto max-h-[90vh] border border-black/5 dark:border-white/5" onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 bg-black/95 backdrop-blur-xl flex items-center justify-center z-50 animate-fade-in" onClick={onClose}>
+      <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl p-8 w-full max-w-lg m-4 relative animate-slide-in-up overflow-y-auto max-h-[90vh] border border-black/5 dark:border-white/5" onClick={(e) => e.stopPropagation()}>
         <button type="button" onClick={onClose} aria-label="Close" className="absolute top-6 right-6 text-textSecondary-light dark:text-textSecondary-dark hover:text-primary transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

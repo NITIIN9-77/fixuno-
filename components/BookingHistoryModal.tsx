@@ -17,9 +17,9 @@ const BookingHistoryModal: React.FC<BookingHistoryModalProps> = ({ bookings, onC
   }, []);
 
   return (
-    <div className="fixed inset-0 bg-background/50 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in" onClick={onClose}>
-      <div className="bg-surface rounded-xl shadow-2xl w-full max-w-2xl m-4 relative animate-slide-in-up flex flex-col max-h-[80vh] border border-slate-700" onClick={(e) => e.stopPropagation()}>
-        <header className="p-6 border-b border-slate-700 flex justify-between items-center bg-surface sticky top-0 z-10 rounded-t-xl">
+    <div className="fixed inset-0 bg-black/95 backdrop-blur-xl flex items-center justify-center z-50 animate-fade-in" onClick={onClose}>
+      <div className="bg-slate-900 rounded-xl shadow-2xl w-full max-w-2xl m-4 relative animate-slide-in-up flex flex-col max-h-[80vh] border border-slate-700" onClick={(e) => e.stopPropagation()}>
+        <header className="p-6 border-b border-slate-700 flex justify-between items-center bg-slate-900 sticky top-0 z-10 rounded-t-xl">
           <div>
             <h2 className="text-2xl font-bold text-textPrimary">My Bookings</h2>
             <p className="text-sm text-textSecondary">Manage your service requests.</p>
