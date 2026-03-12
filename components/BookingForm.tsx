@@ -22,6 +22,8 @@ const BookingForm: React.FC<BookingFormProps> = ({ cart, userProfile, onClose, o
   const [submissionError, setSubmissionError] = useState('');
   const [formErrors, setFormErrors] = useState<FormErrors>({});
 
+  const [lastBookingId, setLastBookingId] = useState('');
+
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   useEffect(() => {
@@ -74,6 +76,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ cart, userProfile, onClose, o
     setSubmissionStatus('submitting');
 
     const bookingId = `FIX-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+    setLastBookingId(bookingId);
     const dateStr = new Date().toLocaleString("en-IN");
 
     const newBooking: Booking = {
@@ -134,7 +137,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ cart, userProfile, onClose, o
                   </div>
                   <h2 className="text-2xl font-black text-textPrimary-light dark:text-textPrimary-dark mb-4 uppercase tracking-widest italic">Booking Saved!</h2>
                   <p className="text-textSecondary-light dark:text-textSecondary-dark text-sm mb-8">Your details are securely stored. A technician will contact you shortly.</p>
-                  <p className="text-[10px] text-primary font-black bg-primary/10 p-3 rounded-xl uppercase tracking-[0.2em]">Booking ID: FIX-{Math.random().toString(36).substr(2, 9).toUpperCase()}</p>
+                  <p className="text-[10px] text-primary font-black bg-primary/10 p-3 rounded-xl uppercase tracking-[0.2em]">Booking ID: {lastBookingId}</p>
               </div>
           </div>
       );

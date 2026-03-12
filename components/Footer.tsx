@@ -39,11 +39,11 @@ const Footer: React.FC<FooterProps> = ({ onAdminLogin, onNavigate }) => {
             </p>
             <div className="flex space-x-6">
               {[
-                { Icon: InstagramIcon, color: 'text-pink-500' },
-                { Icon: FacebookIcon, color: 'text-blue-600' },
-                { Icon: YouTubeIcon, color: 'text-red-600' }
-              ].map(({ Icon, color }, i) => (
-                <a key={i} href="#" className={`${color} hover:opacity-80 transition-opacity`}>
+                { Icon: InstagramIcon, color: 'text-pink-500', url: 'https://www.instagram.com/fixunomultiservice/' },
+                { Icon: FacebookIcon, color: 'text-blue-600', url: '#' },
+                { Icon: YouTubeIcon, color: 'text-red-600', url: '#' }
+              ].map(({ Icon, color, url }, i) => (
+                <a key={i} href={url} target="_blank" rel="noopener noreferrer" className={`${color} hover:opacity-80 transition-opacity`}>
                   <Icon className="w-5 h-5" />
                 </a>
               ))}
